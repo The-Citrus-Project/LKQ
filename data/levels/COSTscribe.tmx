@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="14" height="11" tilewidth="64" tileheight="64" nextobjectid="111">
+ <tileset firstgid="1" name="COS" tilewidth="64" tileheight="64" tilecount="49">
+  <image source="COS.png" width="448" height="448"/>
+ </tileset>
+ <layer name="under0" width="14" height="11">
+  <data encoding="base64" compression="zlib">
+   eJxTZGBgUBzFo5jGGAANzBPb
+  </data>
+ </layer>
+ <layer name="under1" width="14" height="11">
+  <data encoding="base64" compression="zlib">
+   eJyTZGBgkCIRywCxAgPpgBuI+YaIPgUy9AmRqY+BzvpYGMgLF2UgVgdiDRKxFhADAAeHBNw=
+  </data>
+ </layer>
+ <layer name="under2" width="14" height="11">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo4D2AAACaAAB
+  </data>
+ </layer>
+ <layer name="over0" width="14" height="11">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo4D2AAACaAAB
+  </data>
+ </layer>
+ <objectgroup name="walls">
+  <object id="61" name="wall" gid="13" x="0" y="64" width="64" height="64"/>
+  <object id="62" name="wall" gid="13" x="0" y="128" width="64" height="64"/>
+  <object id="63" name="wall" gid="13" x="0" y="192" width="64" height="64"/>
+  <object id="64" name="wall" gid="13" x="0" y="256" width="64" height="64"/>
+  <object id="65" name="wall" gid="13" x="0" y="320" width="64" height="64"/>
+  <object id="66" name="wall" gid="13" x="0" y="384" width="64" height="64"/>
+  <object id="67" name="wall" gid="13" x="0" y="448" width="64" height="64"/>
+  <object id="68" name="wall" gid="13" x="0" y="512" width="64" height="64"/>
+  <object id="69" name="wall" gid="13" x="0" y="576" width="64" height="64"/>
+  <object id="70" name="wall" gid="13" x="0" y="640" width="64" height="64"/>
+  <object id="71" name="wall" gid="13" x="0" y="704" width="64" height="64"/>
+  <object id="73" name="wall" gid="13" x="64" y="704" width="64" height="64"/>
+  <object id="74" name="wall" gid="13" x="128" y="704" width="64" height="64"/>
+  <object id="75" name="wall" gid="13" x="192" y="704" width="64" height="64"/>
+  <object id="76" name="wall" gid="13" x="256" y="704" width="64" height="64"/>
+  <object id="77" name="wall" gid="13" x="320" y="704" width="64" height="64"/>
+  <object id="78" name="wall" gid="13" x="384" y="704" width="64" height="64"/>
+  <object id="79" name="wall" gid="13" x="448" y="704" width="64" height="64"/>
+  <object id="80" name="wall" gid="13" x="512" y="704" width="64" height="64"/>
+  <object id="81" name="wall" gid="13" x="576" y="704" width="64" height="64"/>
+  <object id="82" name="wall" gid="13" x="640" y="704" width="64" height="64"/>
+  <object id="83" name="wall" gid="13" x="704" y="704" width="64" height="64"/>
+  <object id="84" name="wall" gid="13" x="768" y="704" width="64" height="64"/>
+  <object id="85" name="wall" gid="13" x="832" y="704" width="64" height="64"/>
+  <object id="87" name="wall" gid="13" x="832" y="640" width="64" height="64"/>
+  <object id="88" name="wall" gid="13" x="832" y="576" width="64" height="64"/>
+  <object id="89" name="wall" gid="13" x="832" y="384" width="64" height="64"/>
+  <object id="90" name="wall" gid="13" x="832" y="320" width="64" height="64"/>
+  <object id="91" name="wall" gid="13" x="832" y="256" width="64" height="64"/>
+  <object id="92" name="wall" gid="13" x="832" y="192" width="64" height="64"/>
+  <object id="93" name="wall" gid="13" x="832" y="128" width="64" height="64"/>
+  <object id="94" name="wall" gid="13" x="832" y="64" width="64" height="64"/>
+  <object id="95" name="wall" gid="13" x="768" y="64" width="64" height="64"/>
+  <object id="96" name="wall" gid="13" x="704" y="64" width="64" height="64"/>
+  <object id="97" name="wall" gid="13" x="640" y="64" width="64" height="64"/>
+  <object id="98" name="wall" gid="13" x="576" y="64" width="64" height="64"/>
+  <object id="99" name="wall" gid="13" x="512" y="64" width="64" height="64"/>
+  <object id="100" name="wall" gid="13" x="448" y="64" width="64" height="64"/>
+  <object id="101" name="wall" gid="13" x="384" y="64" width="64" height="64"/>
+  <object id="102" name="wall" gid="13" x="320" y="64" width="64" height="64"/>
+  <object id="103" name="wall" gid="13" x="256" y="64" width="64" height="64"/>
+  <object id="104" name="wall" gid="13" x="192" y="64" width="64" height="64"/>
+  <object id="105" name="wall" gid="13" x="128" y="64" width="64" height="64"/>
+  <object id="106" name="wall" gid="13" x="64" y="64" width="64" height="64"/>
+  <object id="107" name="COSThallway" gid="13" x="896" y="448" width="64" height="64"/>
+  <object id="108" name="COSThallway" gid="13" x="896" y="512" width="64" height="64"/>
+ </objectgroup>
+ <layer name="over1" width="14" height="11">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo4D2AAACaAAB
+  </data>
+ </layer>
+</map>

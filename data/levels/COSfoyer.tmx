@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="11" height="7" tilewidth="64" tileheight="64" nextobjectid="35">
+ <tileset firstgid="1" name="COS" tilewidth="64" tileheight="64" tilecount="49">
+  <image source="COS.png" width="448" height="448"/>
+ </tileset>
+ <layer name="under0" width="11" height="7">
+  <data encoding="csv">
+25,19,19,20,33,33,33,18,19,19,27,
+20,33,33,33,33,33,33,33,33,33,18,
+33,33,33,33,33,33,33,33,33,33,33,
+33,33,33,33,33,33,33,33,33,33,33,
+6,33,33,33,33,33,33,33,33,33,4,
+13,33,33,33,33,33,33,33,33,33,11,
+39,5,5,6,33,33,33,4,5,5,41
+</data>
+ </layer>
+ <layer name="under1" width="11" height="7">
+  <data encoding="csv">
+0,0,0,21,0,0,0,0,0,0,28,
+21,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+7,0,0,0,0,0,0,0,0,0,0,
+32,0,0,0,0,0,0,0,0,0,0,
+0,0,0,7,0,0,0,0,0,0,42
+</data>
+ </layer>
+ <layer name="under2" width="11" height="7">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer name="over0" width="11" height="7">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup name="walls" visible="0">
+  <object id="1" name="wall" gid="19" x="64" y="64" width="64" height="64"/>
+  <object id="2" name="wall" gid="19" x="128" y="64" width="64" height="64"/>
+  <object id="3" name="wall" gid="19" x="512" y="64" width="64" height="64"/>
+  <object id="4" name="wall" gid="19" x="576" y="64" width="64" height="64"/>
+  <object id="6" name="wall" gid="11" x="640" y="384" width="64" height="64"/>
+  <object id="7" name="wall" gid="13" x="0" y="384" width="64" height="64"/>
+  <object id="8" name="wall" gid="5" x="576" y="448" width="64" height="64"/>
+  <object id="9" name="wall" gid="5" x="512" y="448" width="64" height="64"/>
+  <object id="10" name="wall" gid="5" x="64" y="448" width="64" height="64"/>
+  <object id="11" name="wall" gid="5" x="128" y="448" width="64" height="64"/>
+  <object id="12" name="wall" gid="4" x="640" y="320" width="64" height="64"/>
+  <object id="13" name="wall" gid="4" x="448" y="448" width="64" height="64"/>
+  <object id="14" name="wall" gid="6" x="0" y="320" width="64" height="64"/>
+  <object id="15" name="wall" gid="6" x="192" y="448" width="64" height="64"/>
+  <object id="16" name="wall" gid="18" x="640" y="128" width="64" height="64"/>
+  <object id="17" name="wall" gid="18" x="448" y="64" width="64" height="64"/>
+  <object id="18" name="wall" gid="20" x="192" y="64" width="64" height="64"/>
+  <object id="19" name="wall" gid="20" x="0" y="128" width="64" height="64"/>
+  <object id="21" name="wall" gid="25" x="0" y="64" width="64" height="64"/>
+  <object id="22" name="wall" gid="27" x="640" y="64" width="64" height="64"/>
+  <object id="23" name="wall" gid="41" x="640" y="448" width="64" height="64"/>
+  <object id="24" name="wall" gid="39" x="0" y="448" width="64" height="64"/>
+  <object id="25" name="COSstairR" gid="33" x="704" y="192" width="64" height="64"/>
+  <object id="26" name="COSstairR" gid="33" x="704" y="256" width="64" height="64"/>
+  <object id="27" name="wall" gid="33" x="384" y="512" width="64" height="64"/>
+  <object id="28" name="wall" gid="33" x="320" y="512" width="64" height="64"/>
+  <object id="29" name="wall" gid="33" x="256" y="512" width="64" height="64"/>
+  <object id="30" name="COSstairL" gid="33" x="-64" y="256" width="64" height="64"/>
+  <object id="31" name="COSstairL" gid="33" x="-64" y="192" width="64" height="64"/>
+  <object id="32" name="COSthroneroom" gid="33" x="256" y="0" width="64" height="64"/>
+  <object id="33" name="COSthroneroom" gid="33" x="320" y="0" width="64" height="64"/>
+  <object id="34" name="COSthroneroom" gid="33" x="384" y="0" width="64" height="64"/>
+ </objectgroup>
+ <layer name="over1" width="11" height="7">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>

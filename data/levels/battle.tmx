@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="24" tilewidth="25" tileheight="25" nextobjectid="45">
+ <tileset firstgid="1" name="COS" tilewidth="25" tileheight="25" tilecount="289" columns="17">
+  <image source="COS.png" width="448" height="448"/>
+ </tileset>
+ <tileset firstgid="290" name="revolution_grasslands" tilewidth="25" tileheight="25" tilecount="288" columns="12">
+  <image source="revolution_grasslands.png" width="320" height="608"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="32" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztwwENAAAMw6DKm39FF3JIWDVVVfXFAwgO2AE=
+  </data>
+ </layer>
+ <objectgroup name="&quot;floor&quot;">
+  <object id="12" gid="189" x="0" y="400" width="25" height="25"/>
+  <object id="13" gid="189" x="25" y="400" width="25" height="25"/>
+  <object id="14" gid="189" x="50" y="400" width="25" height="25"/>
+  <object id="15" gid="189" x="75" y="400" width="25" height="25"/>
+  <object id="16" gid="189" x="100" y="400" width="25" height="25"/>
+  <object id="17" gid="189" x="125" y="400" width="25" height="25"/>
+  <object id="18" gid="189" x="150" y="400" width="25" height="25"/>
+  <object id="19" gid="189" x="175" y="400" width="25" height="25"/>
+  <object id="20" gid="189" x="200" y="400" width="25" height="25"/>
+  <object id="21" gid="189" x="225" y="400" width="25" height="25"/>
+  <object id="22" gid="189" x="275" y="400" width="25" height="25"/>
+  <object id="23" gid="189" x="250" y="400" width="25" height="25"/>
+  <object id="24" gid="189" x="300" y="400" width="25" height="25"/>
+  <object id="25" gid="189" x="325" y="400" width="25" height="25"/>
+  <object id="26" gid="189" x="350" y="400" width="25" height="25"/>
+  <object id="27" gid="189" x="375" y="400" width="25" height="25"/>
+  <object id="28" gid="189" x="400" y="400" width="25" height="25"/>
+  <object id="29" gid="189" x="425" y="400" width="25" height="25"/>
+  <object id="30" gid="189" x="450" y="400" width="25" height="25"/>
+  <object id="31" gid="189" x="475" y="400" width="25" height="25"/>
+  <object id="32" gid="189" x="525" y="400" width="25" height="25"/>
+  <object id="33" gid="189" x="500" y="400" width="25" height="25"/>
+  <object id="34" gid="189" x="550" y="400" width="25" height="25"/>
+  <object id="35" gid="189" x="575" y="400" width="25" height="25"/>
+  <object id="36" gid="189" x="625" y="400" width="25" height="25"/>
+  <object id="37" gid="189" x="600" y="400" width="25" height="25"/>
+  <object id="38" gid="189" x="650" y="400" width="25" height="25"/>
+  <object id="39" gid="189" x="675" y="400" width="25" height="25"/>
+  <object id="40" gid="189" x="700" y="400" width="25" height="25"/>
+  <object id="41" gid="189" x="725" y="400" width="25" height="25"/>
+  <object id="42" gid="189" x="775" y="400" width="25" height="25"/>
+  <object id="44" gid="189" x="750" y="400" width="25" height="25"/>
+ </objectgroup>
+</map>
