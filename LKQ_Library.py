@@ -91,7 +91,7 @@ def display_text(screen,w,h,text):
 def battle_text(screen, text1, text2, text3, text4):
     pygame.draw.rect(screen, BLUE, (10, 400, 780, 190))
     pygame.draw.rect(screen, WHITE, (15, 405, 770, 180))
-    myfont = pygame.font.SysFont("castellar", 30)
+    myfont = pygame.font.SysFont("castellar", 20)
     myfont.set_bold(False)
     label1 = myfont.render(text1, 1, BLACK)
     label2 = myfont.render(text2, 1, BLACK)
@@ -531,7 +531,7 @@ class Battle_Enemy(pygame.sprite.Sprite):
         self.tick = 0
         self.gauge = 0
         self.bias = None
-        self.aggro = [0, 0, 0]
+        self.aggro = [5, 5, 5]
         self.moves = None
         self.status = 'alive'
     def update(self):
@@ -850,7 +850,7 @@ class Battle_Room(object):
 #BATTLE TEST LEVEL
 class Battle_Test(Battle_Room):
     def __init__(self,players,screen):
-        Battle_Room.__init__(self,players,'levels/battle.tmx',screen,"data/music/battle.ogg")
+        Battle_Room.__init__(self,players,'levels/battle.tmx',screen,"data/music/battle.wav")
 #FIRST TEST LEVEL           
 class grass_test(Room):
     def __init__(self,player,screen):
