@@ -42,9 +42,9 @@ def main():
     
     #Player Creation
     movingsprites = pygame.sprite.Group()
-    player = Hero(180,180,"Archy", 150, 150, 150, 150, 150, 0, 100000, 30)
-    bob = Hero(180,180,"bob", 150, 150, 150, 150, 150, 0, 100000, 30)
-    bob2 = Hero(180,180,"bob2", 150, 150, 150, 150, 150, 0, 100000, 30)
+    player = Hero(180,180,"P1", 150, 150, 150, 150, 150, 0, 100000, 30)
+    bob = Hero(180,180,"P2", 150, 150, 150, 150, 140, 0, 100000, 30)
+    bob2 = Hero(180,180,"P3", 150, 150, 150, 150, 136, 0, 100000, 30)
     movingsprites.add(player)
     movingsprites.add(bob)
     movingsprites.add(bob2)
@@ -123,7 +123,7 @@ def main():
     deadplayers = [0, 0, 0]
     deadenemies = [0, 0, 0]
     display1, display2, display3, display4 = "", "", "", ""
-    text1, text2, text3, text4 = "apples", "", "", ""
+    text1, text2, text3, text4 = "", "", "", ""
     
     #Misc.    
     time = 0
@@ -152,6 +152,10 @@ def main():
                         game_mode = 2
                         player.rect.x = 500
                         player.rect.y = 300
+                        bob.rect.x = 570
+                        bob.rect.y = 320
+                        bob2.rect.x = 640
+                        bob2.rect.y = 270
                         break
                     #Text debugging
                     if event.key == pygame.K_5:
@@ -212,7 +216,7 @@ def main():
                         f.write(player.direction + "\n")
                         f.write(str(current_room_no) + "\n")
                         f.write(HeroName + "\n")
-                        f.write(str(player.money) + "/n")
+                        f.write(str(player.money) + "\n")
                         f.close()
                         f = open("data/save files/temp_save.txt","w")
                         f.write(str(player.rect.x) + "\n")
@@ -220,7 +224,7 @@ def main():
                         f.write(player.direction + "\n")
                         f.write(str(current_room_no) + "\n")
                         f.write(HeroName + "\n")
-                        f.write(str(player.money) + "/n")
+                        f.write(str(player.money) + "\n")
                         f.close()
                             
                     #TEMPORARY LOADING METHOD, REMOVE IN THE FUTURE
@@ -236,7 +240,7 @@ def main():
                         player.rect.y = int(f.readline())
                         player.direction = f.readline()[0:-1]
                         current_room_no = int(f.readline())
-                        HeroName = f.readline()
+                        HeroName = f.readline()[0:-1]
                         player.money = int(f.readline())
                         f.close()
                         player.old_x = player.rect.x
@@ -336,6 +340,10 @@ def main():
                 game_mode = 2
                 player.rect.x = 500
                 player.rect.y = 300
+                bob.rect.x = 570
+                bob.rect.y = 320
+                bob2.rect.x = 640
+                bob2.rect.y = 270
                 pygame.mixer.music.fadeout(fade_time)
                 pygame.mixer.music.load(battles[0].music)
                 pygame.mixer.music.set_volume(music_volume)
@@ -386,15 +394,17 @@ def main():
             battles[0].draw(screen)
             battles[0].update(10*current_room.map_layer.zoom,time,text_displayed)
             player.moveb(battles[0].wall_list,player.rect.width/2,time)
-            bob.rect.x, bob.rect.y = player.rect.x + 70, player.rect.y
-            bob2.rect.x, bob2.rect.y = player.rect.x + 140, player.rect.y 
+            bob.moveb(battles[0].wall_list, bob.rect.width / 2, time)
+            bob2.moveb(battles[0].wall_list, bob2.rect.width / 2, time)
+            # bob.rect.x, bob.rect.y = player.rect.x + 70, player.rect.y
+            # bob2.rect.x, bob2.rect.y = player.rect.x + 140, player.rect.y
             for enemy in player.battle_trigger.group:
                 battles[0].enemy_sprites.add(enemy)
                 enemy.moveb(battles[0].wall_list, enemy.rect.width/2, time)
             players = battles[0].players
             enemies = player.battle_trigger.group
             battle_text(screen, display1, display2, display3, display4)
-            battle_tick = .5
+            battle_tick = .4
             fast_player = players[0]
             for enemy in enemies:
                 enemy.tick = battle_tick * enemy.stats['speed']/fast_player.stats['speed']
@@ -406,6 +416,9 @@ def main():
                 hero.tick = battle_tick * hero.stats['speed']/fast_player.stats['speed']
                 #print (hero.name, hero.stats['hp'], hero.level)
             for enemy in enemies:
+                for hero in players:
+                    if hero.status == 'dead':
+                        enemy.aggro[players.index(hero)] = 0
                 if enemy.status == 'dead':
                     enemy.gauge = 0
                     enemy.stats['hp'] = 0
@@ -415,9 +428,11 @@ def main():
                     if enemy.gauge >= 100:
                         target = players[enemy.aggro.index(max(enemy.aggro))]
                         move = enemy.AI(target)
+                        enemy.rect.centery -= 40
+                        enemy.feet.midbottom = enemy.rect.midbottom
                         damage = damaged(enemy, target, move)
                         target.stats['hp']  -= damage
-                        text1, text2, text3, text4, display1, display2, display3, display4 = text_queue(text1, text2, text3, text4, display1, display2, display3, display4, ("%s dealt %f damage to %s using %s." %(enemy.name, damage,  target.name,  move[0]) ))
+                        text1, text2, text3, text4, display1, display2, display3, display4 = text_queue(text1, text2, text3, text4, display1, display2, display3, display4, ("%s dealt %i damage to %s using %s." %(enemy.name, damage,  target.name,  move[0]) ))
                         enemy.gauge = 0
                         if target.stats['hp'] <= 0:
                             enemy.aggro[players.index(target)] = 0
@@ -436,11 +451,15 @@ def main():
                 else:
                     if hero.gauge >= 100:
                         targ = randint(0, len(enemies) - 1)
+                        while (enemies[targ].status == 'dead'):
+                            targ = randint(0, len(enemies) - 1)
                         target = enemies[targ]
+                        hero.rect.centery -= 40
+                        hero.feet.midbottom = hero.rect.midbottom
                         move = hero.moves[0]
                         damage = damaged(hero, target, move)
                         target.stats['hp']  -= damage
-                        text1, text2, text3, text4, display1, display2, display3, display4 = text_queue(text1, text2, text3, text4, display1, display2, display3, display4, ("%s dealt %f damage to %s using %s." %(hero.name, damage,  target.name,  move[0])))
+                        text1, text2, text3, text4, display1, display2, display3, display4 = text_queue(text1, text2, text3, text4, display1, display2, display3, display4, ("%s dealt %i damage to %s using %s." %(hero.name, damage,  target.name,  move[0])))
                         target.aggro[players.index(hero)] += damage
                         hero.gauge = 0
                         if target.stats['hp'] <= 0:
@@ -457,6 +476,42 @@ def main():
                 text3 = text3[1:]
                 display4 += text4[:1]
                 text4 = text4[1:]
+            if all(deadenemies):
+                game_mode = 1
+                player.battle_trigger = None
+                pygame.mixer.music.fadeout(fade_time)
+                pygame.mixer.music.load(current_room.music)
+                pygame.mixer.music.set_volume(music_volume)
+                pygame.mixer.music.play(-1)
+            if all(deadplayers):
+                game_mode = 1
+                player.battle_trigger = None
+                deadplayers = [0,0,0]
+                deadenemies = [0,0,0]
+                for hero in players:
+                    hero.stats['hp'] = hero.stats['hp_max']
+                    hero.status = 'alive'
+                for enemy in enemies:
+                    enemy.stats['hp'] = enemy.stats['hp_max']
+                    enemy.status = 'alive'
+                save_file = "data/save files/temp_save.txt"
+                f = open(save_file, "r")
+                player.rect.x = int(f.readline())
+                player.rect.y = int(f.readline())
+                player.direction = f.readline()[0:-1]
+                current_room_no = int(f.readline())
+                HeroName = f.readline()[0:-1]
+                player.money = int(f.readline())
+                f.close()
+                player.old_x = player.rect.x
+                player.old_y = player.rect.y
+                current_room = rooms[current_room_no]
+                screen.fill(BLACK)
+                pygame.display.flip()
+                pygame.mixer.music.fadeout(fade_time)
+                pygame.mixer.music.load(current_room.music)
+                pygame.mixer.music.set_volume(music_volume)
+                pygame.mixer.music.play(-1)
         time += 1
         clock.tick(game_speed)
         pygame.display.flip()

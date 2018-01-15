@@ -91,7 +91,7 @@ def display_text(screen,w,h,text):
 def battle_text(screen, text1, text2, text3, text4):
     pygame.draw.rect(screen, BLUE, (10, 400, 780, 190))
     pygame.draw.rect(screen, WHITE, (15, 405, 770, 180))
-    myfont = pygame.font.SysFont("castellar", 30)
+    myfont = pygame.font.SysFont("castellar", 25)
     myfont.set_bold(False)
     label1 = myfont.render(text1, 1, BLACK)
     label2 = myfont.render(text2, 1, BLACK)
@@ -531,7 +531,7 @@ class Battle_Enemy(pygame.sprite.Sprite):
         self.tick = 0
         self.gauge = 0
         self.bias = None
-        self.aggro = [0, 0, 0]
+        self.aggro = [5, 5, 5]
         self.moves = None
         self.status = 'alive'
     def update(self):
@@ -850,7 +850,7 @@ class Battle_Room(object):
 #BATTLE TEST LEVEL
 class Battle_Test(Battle_Room):
     def __init__(self,players,screen):
-        Battle_Room.__init__(self,players,'levels/battle.tmx',screen,"data/music/battle.ogg")
+        Battle_Room.__init__(self,players,'levels/battle.tmx',screen,"data/music/battle.wav")
 #FIRST TEST LEVEL           
 class grass_test(Room):
     def __init__(self,player,screen):
@@ -879,20 +879,20 @@ class COSthroneroom(Room):
     def __init__(self,player,screen):
         Room.__init__(self,player,'levels/COSthroneroom.tmx',screen,"data/music/Songtest.ogg")
         enemy_1 = Jumper(100, 200)
-        enemy_1.name = "archler"
-        enemy_1.level = 30
+        enemy_1.name = "E1"
+        enemy_1.level = 50
         enemy_1.update()
         enemy_1.stats['hp'] = enemy_1.stats['hp_max']
         
         enemy_2 = Slammer(170, 250)
-        enemy_2.name = "tankler"
-        enemy_2.level = 30
+        enemy_2.name = "E2"
+        enemy_2.level = 55
         enemy_2.update()
         enemy_2.stats['hp'] = enemy_2.stats['hp_max']
         
         enemy_3 = Slammer(240, 150)
-        enemy_3.name = "george"
-        enemy_3.level = 30
+        enemy_3.name = "E3"
+        enemy_3.level = 54
         enemy_3.update()
         enemy_3.stats['hp'] = enemy_3.stats['hp_max']
         
