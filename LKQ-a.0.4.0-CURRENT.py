@@ -42,9 +42,9 @@ def main():
     
     #Player Creation
     movingsprites = pygame.sprite.Group()
-    player = Hero(180,180,"Archy", 150, 150, 150, 150, 150, 0, 100000, 30)
-    bob = Hero(180,180,"bob", 150, 150, 150, 150, 150, 0, 100000, 30)
-    bob2 = Hero(180,180,"bob2", 150, 150, 150, 150, 150, 0, 100000, 30)
+    player = Hero(180,180,"P1", 150, 150, 150, 150, 150, 0, 100000, 30)
+    bob = Hero(180,180,"P2", 150, 150, 150, 150, 140, 0, 100000, 30)
+    bob2 = Hero(180,180,"P3", 150, 150, 150, 150, 136, 0, 100000, 30)
     movingsprites.add(player)
     movingsprites.add(bob)
     movingsprites.add(bob2)
@@ -123,7 +123,7 @@ def main():
     deadplayers = [0, 0, 0]
     deadenemies = [0, 0, 0]
     display1, display2, display3, display4 = "", "", "", ""
-    text1, text2, text3, text4 = "apples", "", "", ""
+    text1, text2, text3, text4 = "", "", "", ""
     
     #Misc.    
     time = 0
@@ -152,6 +152,10 @@ def main():
                         game_mode = 2
                         player.rect.x = 500
                         player.rect.y = 300
+                        bob.rect.x = 570
+                        bob.rect.y = 320
+                        bob2.rect.x = 640
+                        bob2.rect.y = 270
                         break
                     #Text debugging
                     if event.key == pygame.K_5:
@@ -336,6 +340,10 @@ def main():
                 game_mode = 2
                 player.rect.x = 500
                 player.rect.y = 300
+                bob.rect.x = 570
+                bob.rect.y = 320
+                bob2.rect.x = 640
+                bob2.rect.y = 270
                 pygame.mixer.music.fadeout(fade_time)
                 pygame.mixer.music.load(battles[0].music)
                 pygame.mixer.music.set_volume(music_volume)
@@ -471,9 +479,21 @@ def main():
             if all(deadenemies):
                 game_mode = 1
                 player.battle_trigger = None
+                pygame.mixer.music.fadeout(fade_time)
+                pygame.mixer.music.load(current_room.music)
+                pygame.mixer.music.set_volume(music_volume)
+                pygame.mixer.music.play(-1)
             if all(deadplayers):
                 game_mode = 1
                 player.battle_trigger = None
+                deadplayers = [0,0,0]
+                deadenemies = [0,0,0]
+                for hero in players:
+                    hero.stats['hp'] = hero.stats['hp_max']
+                    hero.status = 'alive'
+                for enemy in enemies:
+                    enemy.stats['hp'] = enemy.stats['hp_max']
+                    enemy.status = 'alive'
                 save_file = "data/save files/temp_save.txt"
                 f = open(save_file, "r")
                 player.rect.x = int(f.readline())
