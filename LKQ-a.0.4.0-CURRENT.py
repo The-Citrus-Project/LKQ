@@ -384,11 +384,8 @@ def main():
             texx("Y: ",5,120,screen,RED,20)
             texx(str(player.rect.y),40,120,screen,RED,20)
             texx("FPS: ",5,150,screen,RED,20)
-            texx(str(round(clock.get_fps(), 2)),60,150,screen,RED,20)
-            texx("OX: ",5,190,screen,RED,20)
-            texx(str(player.old_x),60,190,screen,RED,20)
-            texx("OY: ",5,220,screen,RED,20)
-            texx(str(player.old_y),60,220,screen,RED,20)
+            texx(str(round(clock.get_fps(), 0)),60,150,screen,RED,20)
+
             #keep track of time
         if game_mode == 2:
             battles[0].draw(screen)
