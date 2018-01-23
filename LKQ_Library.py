@@ -600,7 +600,7 @@ class Hero(pygame.sprite.Sprite):
     battle_trigger = None
     
     def __init__(self,x,y, name, power, magic, resiliance, spirit, speed, luck, hp, level):
-        get_sprites(self, "data/images/holder.gif",60,60, self.Dwalkpics, self.Uwalkpics, self.Rwalkpics, self.Lwalkpics)
+        get_sprites(self, "data/images/holder.png",60,60, self.Dwalkpics, self.Uwalkpics, self.Rwalkpics, self.Lwalkpics)
     
         #Set the default position and image
         self.image = self.Dwalkpics[0]
