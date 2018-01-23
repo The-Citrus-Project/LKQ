@@ -130,7 +130,7 @@ def main():
     speed = 6
     move_speed = speed #* current_room.map_layer.zoom
     current_save = 1
-    game_speed = 60
+    game_speed = 30
     game_mode = 1 # 0 - Start Screens, 1 - Overworld, 2 - Battle, 3 - Pause Menus
     clock = pygame.time.Clock()
     running = True
