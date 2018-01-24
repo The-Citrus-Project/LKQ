@@ -26,28 +26,33 @@ from random import randint
 from math import sqrt,pow,fabs
 
 
-# define configuration variables here
-RESOURCES_DIR = 'data'
+#Global Variables
 
-WIN_WIDTH = 800
-WIN_HEIGHT = 600
+RESOURCES_DIR = 'data'         # resource directory
+
+WIN_WIDTH = 800                # window width
+WIN_HEIGHT = 600               # window height
 #            R    G    B
-BLACK  = (   0,   0,   0)      #self explanatory: RGB for black
-WHITE  = ( 255, 255, 255)      #self explanatory: RGB for white
-BLUE   = (   0,   0, 255)      #self explanatory: RGB for blue
-GREEN  = (   0, 255,   0)      #self explanatory: RGB for green
-RED    = ( 255,   0,   0)      #self explanatory: RGB for red
-PURPLE = ( 255,   0, 255)      #self explanatory: RGB for purple
-AQUA   = (   0, 255, 255)      #self explanatory: RGB for aqua  
-YELLOW = ( 255, 255,   0)      #self explanatory: RGB for yellow
+BLACK  = (   0,   0,   0)      # RGB for black
+WHITE  = ( 255, 255, 255)      # RGB for white
+BLUE   = (   0,   0, 255)      # RGB for blue
+GREEN  = (   0, 255,   0)      # RGB for green
+RED    = ( 255,   0,   0)      # RGB for red
+PURPLE = ( 255,   0, 255)      # RGB for purple
+AQUA   = (   0, 255, 255)      # RGB for aqua
+YELLOW = ( 255, 255,   0)      # RGB for yellow
 
 
 # ------------------------------------ FUNCTIONS ------------------------------------------------------------------
-def texx(text,x,y,screen,color,font):
-    myfont = pygame.font.SysFont("timesnewroman", font)
+
+# function to display debugging text to the screen
+def texx(text,x,y,screen,color,size):
+    myfont = pygame.font.SysFont("timesnewroman", size)
     myfont.set_bold(True)
     label = myfont.render(text, 1, color)
     screen.blit(label, (x,y))
+
+# function to calculate the damage done to the defender by the attacker with a given attack move
 def damaged(attacker, defender, move):
     weapon = attacker.weapon
     armour = defender.armour
@@ -67,20 +72,22 @@ def damaged(attacker, defender, move):
     physical_damage = ((attacker.stats['power'] )/(defender.stats['resiliance']))*(weapon.stats['power']/armour.stats['resiliance']) * move[1] / 100
     damage = (magical_damage + physical_damage)*modifier
     return (damage)
-    
+
+# display the amount of money to the screen beside an image of a citron.
 def display_money(screen,citrons):
     money = pygame.image.load("data/images/Citron.gif").convert()
     screen.blit(money, (715, 10))
     myfont = pygame.font.SysFont("iomanoid", 30)
     myfont.set_bold(False)
     label = myfont.render(citrons, 1, PURPLE)
-    label2 = myfont.render(citrons, 1, BLACK)
+    label2 = myfont.render(citrons, 1, BLACK)  # used to create a black border to prevent blend in
     screen.blit(label2, (739, 4))
     screen.blit(label2, (739, 6))
     screen.blit(label2, (741, 4))
     screen.blit(label2, (741, 6))
     screen.blit(label, (740, 5))
-          
+
+# function to display game text/npc dialogue to the screen.
 def display_text(screen,w,h,text):
     pygame.draw.rect(screen, BLUE, (10, h - 90, w - 20, 80))
     pygame.draw.rect(screen, WHITE, (15, h - 85, w - 30, 70))
@@ -88,6 +95,8 @@ def display_text(screen,w,h,text):
     myfont.set_bold(True)
     label = myfont.render(text, 1, BLACK)
     screen.blit(label, (20,h-80))
+
+# function (that probably needs a rewrite) to display text during the battle phase.
 def battle_text(screen, text1, text2, text3, text4):
     pygame.draw.rect(screen, BLUE, (10, 400, 780, 190))
     pygame.draw.rect(screen, WHITE, (15, 405, 770, 180))
@@ -101,6 +110,8 @@ def battle_text(screen, text1, text2, text3, text4):
     screen.blit(label2, (20,455))
     screen.blit(label3, (20,500))
     screen.blit(label4, (20,545))
+
+# function (that likely also should be rewritten) to queue the text for the battle phase.
 def text_queue(text1, text2, text3, text4, d1, d2, d3, d4, text):
     if text1 == "":
         return text, text2, text3, text4, "", d2, d3, d4
@@ -113,20 +124,20 @@ def text_queue(text1, text2, text3, text4, d1, d2, d3, d4, text):
     else:
         return text1, text2, text3, text4, d1, d2, d3, d4
 
+# function to make the screen resizable (I think)
 def init_screen(width, height):
     screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
     return screen
 
-# make loading maps a little easier
+# function to make loading maps a little easier
 def get_map(filename):
     return os.path.join(RESOURCES_DIR, filename)
 
-
-# make loading images a little easier
+# function to make loading images a little easier
 def load_image(filename):
     return pygame.image.load(os.path.join(RESOURCES_DIR, filename))
 
-#LOAD SPRITES FROM A FILE
+# function to load sprites from a spritesheet (only works for a 4 x 4 spritesheet that goes D L U R)
 def get_sprites(self, file, width, height, D, U, R, L):
     pygame.sprite.Sprite.__init__(self)
     sheet = SpriteSheet(file)
@@ -1045,116 +1056,5 @@ class COSBdining(Room):
         if place == "COSBstair0":
             return (0*64, 14.5*64, "right")
 
-'''def battle(players, enemies):
-    Battle = True
-    battle_tick = 10
-    fast_player = players[0]
-    deadplayers = [0, 0]
-    deadenemies = [0, 0]
-    for enemy in enemies:
-        enemy.tick = battle_tick * enemy.stats['speed']/fast_player.stats['speed']
-        print (enemy.name, enemy.stats['hp'])
-        for player in players:
-            if player.type == enemy.bias:
-                enemy.aggro[players.index(player)] = 1000
-    for player in players:
-        player.tick = battle_tick * player.stats['speed']/fast_player.stats['speed']
-        print (player.name, player.stats['hp'])
-    while Battle:
-        for enemy in enemies:
-            if enemy.status == 'dead':
-                enemy.gauge = 0
-                enemy.stats['hp'] = 0
-                enemy.aggro = [0, 0, 0]
-                deadenemies[enemies.index(enemy)] = 1
-            else:
-                if enemy.gauge >= 100:
-                    target = players[enemy.aggro.index(max(enemy.aggro))]
-                    move = enemy.AI(target)
-                    damage = damaged(enemy, target, move)
-                    target.stats['hp']  -= damage
-                    print (enemy.aggro)
-                    print ("%s dealt %f damage to %s using %s." %(enemy.name, damage,  target.name,  move[0]) )
-                    enemy.gauge = 0
-                    if target.stats['hp'] <= 0:
-                        enemy.aggro[players.index(target)] = 0
-                        print ("%s fainted!" %(target.name))
-                        target.status = 'dead'
-                        print (enemy.aggro)
-                enemy.gauge += enemy.tick
-                #print ("%s: %f" %(enemy.name,  enemy.gauge))
-                
-            
-            
-        for player in players:
-            if player.status == 'dead':
-                player.stats['hp'] = 0
-                player.gauge = 0
-                deadplayers[players.index(player)] = 1
-            else:
-                if player.gauge >= 100:
-                    targ = randint(0, len(enemies) - 1)
-                    target = enemies[targ]
-                    move = player.moves[0]
-                    damage = damaged(player, target, move)
-                    target.stats['hp']  -= damage
-                    print ("%s dealt %f damage to %s using %s." %(player.name, damage,  target.name,  move[0]))
-                    target.aggro[players.index(player)] += damage
-                    player.gauge = 0
-                    if target.stats['hp'] <= 0:
-                        print ("%s fainted!" %(target.name))
-                        target.status = 'dead'
 
-                player.gauge += player.tick               
-                #print ("%s: %f" %(player.name,  player.gauge))
-        if all(deadplayers):
-           winners = enemies
-           Battle = False
-        if all(deadenemies):
-           winners = players
-           Battle = False
-        #sleep(.5)
-        #print ('\n')
-    return (winners)
-    
-def hp_calc(level):
-    pygame.init()
-    pygame.mixer.init()
-    pygame.font.init()
-    screen = init_screen(WIN_WIDTH, WIN_HEIGHT)
-    pygame.display.init()
-    pygame.display.set_caption('Lemon Kingdom Quest: The Sorceror Arises')
-    man_1 = Hero(5,5,"Archy", 150, 150, 150, 150, 150, 0, 100000)
-    man_1.level = level
-    man_1.weapon = Glaive()
-    man_1.armour = Ruby_vest(1, 0)
-    man_1.type = 'archer'
-    man_1.update()   
-    man_1.stats['hp'] = man_1.stats['hp_max']
-    
-    man_2 = Hero(5,5,"Tanky", 150, 150, 150, 150, 140, 0, 100000)
-    man_2.level = level
-    man_2.weapon = Glaive()
-    man_2.armour = Ruby_vest(1, 0)
-    man_2.type = 'tank'
-    man_2.update()
-    man_2.stats['hp'] = man_2.stats['hp_max']
-    
-    enemy_1 = Jumper()
-    enemy_1.name = "archler"
-    enemy_1.level = level
-    enemy_1.update()
-    enemy_1.stats['hp'] = enemy_1.stats['hp_max']
-    
-    enemy_2 = Slammer()
-    enemy_2.name = "tankler"
-    enemy_2.level = level
-    enemy_2.update()
-    enemy_2.stats['hp'] = enemy_2.stats['hp_max']
-    
-    return (battle([man_1,  man_2], [enemy_1,  enemy_2]))
-    
-for i in hp_calc(75):
-    print ("%s: %f"  %(i.name,  i.stats['hp']))
-'''
     
