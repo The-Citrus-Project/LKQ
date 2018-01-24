@@ -4,7 +4,7 @@ Lemon Kingdom Quest: The Sorceror Arises
 - Story: Nakamura Daiki, Yukimura Nobuko
 - Main Programmer: Ethan Fyre of NaetherTech
 - Citrish and Pholeth: Karl Schneider, Nikita Chekhov
-- Sprite Design: Nikita Chekhov,  Kobayashi Koji
+- Sprite Design: Nikita Chekhov, Kobayashi Koji
 - Concept Art: N/A
 - Game Testing: Gregor Mikhailova
 - Music: Frank Lawson, Kobayashi Koji
