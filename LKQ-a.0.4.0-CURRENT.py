@@ -165,6 +165,11 @@ def main():
                     if event.key == pygame.K_7:
                         test_text = "Happy is the man who dies"
                         text_display = ""
+                    #Change game speed
+                    if event.key == pygame.K_0:
+                        game_speed += 5
+                    if event.key == pygame.K_9:
+                        game_speed += -5
                     #Change text speed
                     if text_displayed == True:
                         if event.key == pygame.K_k:
