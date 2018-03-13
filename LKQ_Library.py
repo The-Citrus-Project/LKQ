@@ -21,12 +21,11 @@ import pyscroll
 import pyscroll.data
 from pyscroll.group import PyscrollGroup
 
-import time as tm
 from random import randint
-from math import sqrt,pow,fabs
+from math import sqrt, fabs
 
 
-#Global Variables
+# Global Variables
 
 RESOURCES_DIR = 'data'         # resource directory
 
@@ -94,10 +93,10 @@ def display_text(screen, w, h, text):
     """Function to display game text/npc dialogue to the screen."""
     pygame.draw.rect(screen, BLUE, (10, h - 90, w - 20, 80))
     pygame.draw.rect(screen, WHITE, (15, h - 85, w - 30, 70))
-    myfont = pygame.font.SysFont("iomanoid", 15)
+    myfont = pygame.font.SysFont("castellar", 20)
     myfont.set_bold(True)
     label = myfont.render(text, 1, BLACK)
-    screen.blit(label, (20,h-80))
+    screen.blit(label, (20, h - 80))
 
 
 def battle_text(screen, text1, text2, text3, text4):
@@ -186,7 +185,7 @@ def get_sprites(self, file, width, height, D, U, R, L):
     image = sheet.pic(width, height*3, width, height)
     L.append(image)
 
-#----------------------------------------------------------CLASSES-----------------------------------------------------------------
+# ------------------------------------------CLASSES------------------------------------
 
 
 class SpriteSheet(object):
@@ -228,6 +227,173 @@ class Chest(pygame.sprite.Sprite):
         self.items = []
 
 
+class Hero(pygame.sprite.Sprite):
+    change_x = 0
+    change_y = 0
+
+    Rwalkpics = []
+    Lwalkpics = []
+    Uwalkpics = []
+    Dwalkpics = []
+    Rswordpics = []
+    direction = 'down'
+    money = 10
+    battle_trigger = None
+
+    def __init__(self, x, y, name, power, magic, resiliance, spirit, speed, luck, hp, level):
+        get_sprites(self, "data/images/holder.png", 60, 60, self.Dwalkpics, self.Uwalkpics, self.Rwalkpics,
+                    self.Lwalkpics)
+
+        # Set the default position and image
+        self.image = self.Dwalkpics[0]
+        self.rect = self.image.get_bounding_rect()
+        self.rect.center = (x, y)
+        self.old_y = y
+        self.old_x = x
+        self.feet = pygame.Rect(0, 0, self.rect.width, self.rect.height * .5)
+        self.base_stats = {}
+        self.stats = {}
+        print("yeah")
+        self.weapon = None
+        self.armour = None
+        self.level = level
+        self.name = name
+        self.base_stats['power'] = power
+        self.base_stats['magic'] = magic
+        self.base_stats['resiliance'] = resiliance
+        self.base_stats['spirit'] = spirit
+        self.base_stats['speed'] = speed
+        self.base_stats['luck'] = luck
+        self.base_stats['hp'] = hp
+        self.stats['hp'] = (self.base_stats['hp'] * self.level / 100)
+        self.type = "none"
+        self.tick = 0
+        self.gauge = 0
+        self.moves = [["Killer", 90, 0], ["Ripper", 60, 100]]
+        self.status = 'alive'
+
+    def changespeed(self, x, y):
+        self.change_x += x
+        self.change_y += y
+
+    def update(self):
+        self.stats['power'] = (self.base_stats['power'] * self.level / 100) + self.weapon.stats['power_bonus']
+        self.stats['magic'] = (self.base_stats['magic'] * self.level / 100) + self.weapon.stats['magic_bonus']
+        self.stats['resiliance'] = (self.base_stats['resiliance'] * self.level / 100) + self.armour.stats[
+            'resiliance_bonus']
+        self.stats['spirit'] = (self.base_stats['spirit'] * self.level / 100) + self.armour.stats['spirit_bonus']
+        self.stats['speed'] = (self.base_stats['speed'] * self.level / 100) - self.armour.stats['weight'] - \
+                              self.weapon.stats['weight']
+        self.stats['luck'] = (self.base_stats['luck']) + self.armour.stats['luck_bonus'] + self.weapon.stats[
+            'luck_bonus']
+        self.stats['hp_max'] = (self.base_stats['hp'] * self.level / 100) + self.armour.stats['hp_bonus'] + \
+                               self.weapon.stats['hp_bonus']
+
+    def drawh(self, screen):
+        if self.stats['hp'] >= self.stats['hp_max'] / 2:
+            COLOR = GREEN
+        elif self.stats['hp'] <= self.stats['hp_max'] / 4:
+            COLOR = RED
+        else:
+            COLOR = YELLOW
+        pygame.draw.rect(screen, BLACK, (self.rect.x - 1, self.rect.y - 11, 62, 7))
+        pygame.draw.rect(screen, COLOR,
+                         (self.rect.x, self.rect.y - 10, (self.stats['hp'] / self.stats['hp_max'] * 60), 5))
+        pygame.draw.rect(screen, BLACK, (self.rect.x - 1, self.rect.y - 19, 62, 5))
+        pygame.draw.rect(screen, BLUE, (self.rect.x, self.rect.y - 18, self.gauge / 100 * 60, 3))
+
+    def moveb(self, walls, dist, t):
+        self.old_x = self.rect.centerx
+        self.old_y = self.rect.centery
+        self.rect.centerx += float(self.change_x)
+        self.rect.centery += float(self.change_y) + 3
+        self.feet.midbottom = self.rect.midbottom
+
+    def move(self, walls, enemies, npcs, chests, room, dist, t):
+        """ Find a new position for the player """
+
+        # Move left/right
+        self.old_x = self.rect.centerx
+        self.old_y = self.rect.centery
+        self.rect.centerx += float(self.change_x)
+        posh = float(self.rect.centerx)
+        self.rect.centery += float(self.change_y)
+        posv = float(self.rect.centery)
+        self.feet.midbottom = self.rect.midbottom
+
+        # 'animate' the character by switching sprites
+        if self.change_x > 0 and (self.change_y < 0 or self.change_y == 0):
+            if self.change_x == 0 and self.change_y == 0:
+                self.image = self.Rwalkpics[0]
+            else:
+                frame = (posh // dist) % len(self.Rwalkpics)
+                self.image = self.Rwalkpics[int(frame)]
+        elif self.change_x < 0 and (self.change_y > 0 or self.change_y == 0):
+            if self.change_x == 0 and self.change_y == 0:
+                self.image = self.Lwalkpics[0]
+            else:
+                frame = (posh // dist) % len(self.Lwalkpics)
+                self.image = self.Lwalkpics[int(frame)]
+        elif self.change_y < 0 and (self.change_x < 0 or self.change_x == 0):
+            if self.change_x == 0 and self.change_y == 0:
+                self.image = self.Uwalkpics[0]
+            else:
+                frame = (posv // dist) % len(self.Uwalkpics)
+                self.image = self.Uwalkpics[int(frame)]
+        elif self.change_y > 0 and (self.change_x > 0 or self.change_x == 0):
+            if self.change_x == 0 and self.change_y == 0:
+                self.image = self.Dwalkpics[0]
+            else:
+                frame = (posv // dist) % len(self.Dwalkpics)
+                self.image = self.Dwalkpics[int(frame)]
+
+        # See if the player hit/was hit by an enemy and act accordingly
+        enemy_hit_list = pygame.sprite.spritecollide(self, enemies, False)
+        for block in enemy_hit_list:
+            if pygame.sprite.collide_rect(self, block):
+                self.battle_trigger = block
+        #            else:
+        #                self.battle_trigger = None
+        # See if the player hits a chest
+        chest_hit_list = chests
+        for chest in chest_hit_list:
+            if pygame.sprite.collide_rect(self, chest):
+                chest.contact = True
+            else:
+                chest.contact = False
+        # See if the player hit/was hit by an npc and act accordingly
+        npc_hit_list = npcs
+        for npc in npc_hit_list:
+            if pygame.sprite.collide_rect(self, npc):
+                if self.change_x != 0 or self.change_y != 0:
+                    self.move_back()
+                if npc.change_x != 0 or npc.change_y != 0:
+                    npc.move_back()
+            if sqrt((self.rect.centerx - npc.rect.centerx) ** 2 + (self.rect.centery - npc.rect.centery) ** 2) < 90:
+                act_dist = [self.rect.centerx - npc.rect.centerx, self.rect.centery - npc.rect.centery]
+                mag_dist = [fabs(i) for i in act_dist]
+                if mag_dist.index(max(mag_dist)) == 0:    # The x distance is less
+                    if act_dist[0] > 0:
+                        npc.right = True
+                    else:
+                        npc.left = True
+                else:
+                    if act_dist[1] > 0:
+                        npc.above = True
+                    else:
+                        npc.below = True
+    #            else:
+    #                block.above = False
+    #                block.below = False
+    #                block.left = False
+    #                block.right = False
+
+    def move_back(self):
+        self.rect.centerx = self.old_x
+        self.rect.centery = self.old_y
+        self.feet.midbottom = self.rect.midbottom
+
+
 class NPC(pygame.sprite.Sprite):
     """Class used to define an npc"""
     change_x = 0
@@ -239,10 +405,10 @@ class NPC(pygame.sprite.Sprite):
     Dwalkpics = []
 
     text = ""
-    above = False         #Is the player above the npc?
-    below = False         #Is the player below the npc?
-    left = False          #Is the player left of the npc?
-    right = False         #Is the player right of the npc?
+    above = False         # Is the player above the npc?
+    below = False         # Is the player below the npc?
+    left = False          # Is the player left of the npc?
+    right = False         # Is the player right of the npc?
     speed = 2
     player = None
     direction = "down"
@@ -297,7 +463,7 @@ class NPC(pygame.sprite.Sprite):
                 self.direction = "up"
         if not text_displayed:
             if time % 30 == 0 :
-                ter = randint(0,5)
+                ter = randint(0, 5)
                 if ter == 0:
                     self.change_x = 0
                     self.change_y = self.speed
@@ -360,12 +526,12 @@ class Enemy(pygame.sprite.Sprite):
     Uwalkpics = []
     Dwalkpics = []
     speed = 2
-    above = False         #Is the player above the enemy?
-    below = False         #Is the player below the enemy?
-    left = False          #Is the player left of the enemy?
-    right = False         #Is the player right of the enemy?
-    targeting = False     #Is the enemy currently targeting the player?
-    target = True         #Will the enemy target the player?
+    above = False         # Is the player above the enemy?
+    below = False         # Is the player below the enemy?
+    left = False          # Is the player left of the enemy?
+    right = False         # Is the player right of the enemy?
+    targeting = False     # Is the enemy currently targeting the player?
+    target = True         # Will the enemy target the player?
 
     direction = "down"
 
@@ -501,13 +667,13 @@ class Enemy(pygame.sprite.Sprite):
 class Weapon(object):
     def __init__(self,  name, power, magic, power_bonus, magic_bonus, weight,  luck_bonus, hp_bonus):
         self.stats = {}
-        self.stats['power'] = power                            #0-200
-        self.stats['magic'] = magic                            #0-200
-        self.stats['weight'] = weight                         #0-50
-        self.stats['power_bonus'] = power_bonus     #0-20
-        self.stats['magic_bonus'] = magic_bonus     #0-20
-        self.stats['luck_bonus'] = luck_bonus          #0-20
-        self.stats['hp_bonus'] = hp_bonus                #0-5000
+        self.stats['power'] = power                 # 0-200
+        self.stats['magic'] = magic                 # 0-200
+        self.stats['weight'] = weight               # 0-50
+        self.stats['power_bonus'] = power_bonus     # 0-20
+        self.stats['magic_bonus'] = magic_bonus     # 0-20
+        self.stats['luck_bonus'] = luck_bonus       # 0-20
+        self.stats['hp_bonus'] = hp_bonus           # 0-5000
 
 
 class Glaive(Weapon):
@@ -545,10 +711,10 @@ class Battle_Enemy(pygame.sprite.Sprite):
     Rswordpics = []
     direction = 'down'
 
-    def __init__(self,x, y, name, power, magic, resiliance, spirit, speed, luck, hp):
+    def __init__(self, x, y, name, power, magic, resiliance, spirit, speed, luck, hp):
         get_sprites(self, "data/images/octorock.gif",40,40, self.Dwalkpics, self.Uwalkpics, self.Rwalkpics, self.Lwalkpics)
 
-        #Set the default position and image
+        # Set the default position and image
         self.image = self.Dwalkpics[0]
         self.rect = self.image.get_bounding_rect()
         self.rect.center = (x,y)
@@ -586,7 +752,6 @@ class Battle_Enemy(pygame.sprite.Sprite):
         self.stats['hp_max'] = (self.base_stats['hp'] * self.level / 100) + self.armour.stats['hp_bonus'] + self.weapon.stats['hp_bonus']
 
     def drawh(self, screen):
-        COLOR = GREEN
         if self.stats['hp'] >= self.stats['hp_max'] / 2:
             COLOR = GREEN
         elif self.stats['hp'] <= self.stats['hp_max'] / 4:
@@ -635,180 +800,7 @@ class Slammer(Battle_Enemy):
         self.bias = 'tank'
 
 
-class Hero(pygame.sprite.Sprite):
-    change_x = 0
-    change_y = 0
-
-    Rwalkpics = []
-    Lwalkpics = []
-    Uwalkpics = []
-    Dwalkpics = []
-    Rswordpics = []
-    direction = 'down'
-    money = 10
-    battle_trigger = None
-
-    def __init__(self,x,y, name, power, magic, resiliance, spirit, speed, luck, hp, level):
-        get_sprites(self, "data/images/holder.png",60,60, self.Dwalkpics, self.Uwalkpics, self.Rwalkpics, self.Lwalkpics)
-
-        #Set the default position and image
-        self.image = self.Dwalkpics[0]
-        self.rect = self.image.get_bounding_rect()
-        self.rect.center = (x,y)
-        self.old_y = y
-        self.old_x = x
-        self.feet = pygame.Rect(0,0, self.rect.width, self.rect.height * .5)
-        self.base_stats = {}
-        self.stats = {}
-        print ("yeah")
-        self.weapon = None
-        self.armour = None
-        self.level = level
-        self.name = name
-        self.base_stats['power'] = power
-        self.base_stats['magic'] = magic
-        self.base_stats['resiliance'] = resiliance
-        self.base_stats['spirit'] = spirit
-        self.base_stats['speed'] = speed
-        self.base_stats['luck'] = luck
-        self.base_stats['hp'] = hp
-        self.stats['hp'] = (self.base_stats['hp'] * self.level / 100)
-        self.type = "none"
-        self.tick = 0
-        self.gauge = 0
-        self.moves = [["Killer",  90, 0], ["Ripper",  60,  100]]
-        self.status = 'alive'
-
-    def changespeed(self, x, y):
-        self.change_x += x
-        self.change_y += y
-
-    def update(self):
-        self.stats['power'] = (self.base_stats['power'] * self.level / 100) + self.weapon.stats['power_bonus']
-        self.stats['magic'] = (self.base_stats['magic'] * self.level / 100) + self.weapon.stats['magic_bonus']
-        self.stats['resiliance'] = (self.base_stats['resiliance'] * self.level / 100) + self.armour.stats['resiliance_bonus']
-        self.stats['spirit'] = (self.base_stats['spirit'] * self.level / 100) + self.armour.stats['spirit_bonus']
-        self.stats['speed'] = (self.base_stats['speed'] * self.level / 100) - self.armour.stats['weight'] - self.weapon.stats['weight']
-        self.stats['luck'] = (self.base_stats['luck']) + self.armour.stats['luck_bonus'] + self.weapon.stats['luck_bonus']
-        self.stats['hp_max'] = (self.base_stats['hp'] * self.level / 100) + self.armour.stats['hp_bonus'] + self.weapon.stats['hp_bonus']
-
-    def drawh(self, screen):
-        COLOR = GREEN
-        if self.stats['hp'] >= self.stats['hp_max'] / 2:
-            COLOR = GREEN
-        elif self.stats['hp'] <= self.stats['hp_max'] / 4:
-            COLOR = RED
-        else:
-            COLOR = YELLOW
-        pygame.draw.rect(screen, BLACK, (self.rect.x - 1, self.rect.y - 11, 62, 7))
-        pygame.draw.rect(screen, COLOR, (self.rect.x, self.rect.y - 10, (self.stats['hp'] / self.stats['hp_max'] * 60), 5))
-        pygame.draw.rect(screen, BLACK, (self.rect.x - 1, self.rect.y - 19, 62, 5))
-        pygame.draw.rect(screen, BLUE, (self.rect.x, self.rect.y - 18, self.gauge / 100 * 60, 3))
-
-    def moveb(self, walls, dist, t):
-        self.old_x = self.rect.centerx
-        self.old_y = self.rect.centery
-        self.rect.centerx += float(self.change_x)
-        self.rect.centery += float(self.change_y) + 3
-        self.feet.midbottom = self.rect.midbottom
-
-    def move(self, walls,enemies,npcs,chests,room,dist,t):
-        """ Find a new position for the player """
-
-        # Move left/right
-        self.old_x = self.rect.centerx
-        self.old_y = self.rect.centery
-        self.rect.centerx += float(self.change_x)
-        posh = float(self.rect.centerx)
-        self.rect.centery += float(self.change_y)
-        posv = float(self.rect.centery)
-        self.feet.midbottom = self.rect.midbottom
-
-        #'animate' the character by switching sprites
-        if self.change_x > 0 and (self.change_y < 0 or self.change_y == 0):
-            print("moving right/ru",self.change_x,self.change_y)
-            if self.change_x == 0 and self.change_y == 0:
-                    self.image = self.Rwalkpics[0]
-            else:
-                frame = (posh // dist) % len(self.Rwalkpics)
-                self.image = self.Rwalkpics[int(frame)]
-        elif self.change_x < 0 and (self.change_y > 0 or self.change_y == 0):
-            print("moving left/ld", self.change_x, self.change_y)
-            if self.change_x == 0 and self.change_y == 0:
-                self.image = self.Lwalkpics[0]
-            else:
-                frame = (posh // dist) % len(self.Lwalkpics)
-                self.image = self.Lwalkpics[int(frame)]
-        elif self.change_y < 0 and (self.change_x < 0 or self.change_x == 0):
-            print("moving up/lu", self.change_x, self.change_y)
-            if self.change_x == 0 and self.change_y == 0:
-                self.image = self.Uwalkpics[0]
-            else:
-                frame = (posv // dist) % len(self.Uwalkpics)
-                self.image = self.Uwalkpics[int(frame)]
-        elif self.change_y > 0 and (self.change_x > 0 or self.change_x == 0):
-            print("moving down/rd", self.change_x, self.change_y)
-            if self.change_x == 0 and self.change_y == 0:
-                self.image = self.Dwalkpics[0]
-            else:
-                frame = (posv // dist) % len(self.Dwalkpics)
-                self.image = self.Dwalkpics[int(frame)]
-
-        # See if the player hit/was hit by an enemy and act accordingly
-        enemy_hit_list = pygame.sprite.spritecollide(self, enemies, False)
-        for block in enemy_hit_list:
-            if pygame.sprite.collide_rect(self, block):
-                self.battle_trigger = block
-#            else:
-#                self.battle_trigger = None
-        #See if the player hits a chest
-        chest_hit_list = chests
-        for chest in chest_hit_list:
-            if pygame.sprite.collide_rect(self, chest):
-                chest.contact = True
-            else:
-                chest.contact = False
-        # See if the player hit/was hit by an npc and act accordingly
-        npc_hit_list = npcs
-        for block in npc_hit_list:
-            if pygame.sprite.collide_rect(self, block):
-                if self.change_x > 0:                   # walking right
-                    self.move_back()
-                    block.left = True
-                elif self.change_x < 0:                 # walking left
-                    self.move_back()
-                    block.right = True
-                elif self.change_y > 0:                 # walking down
-                    self.move_back()
-                    block.below = True
-                elif self.change_y < 0:                 # walking up
-                    self.move_back()
-                    block.above = True
-                if block.change_x > 0:                  # npc walking right
-                    block.move_back()
-                    block.left = True
-                elif block.change_x < 0:                # npc walking left
-                    block.move_back()
-                    block.right = True
-                elif block.change_y > 0:                # npc walking down
-                    block.move_back()
-                    block.below = True
-                elif block.change_y < 0:                # npc walking up
-                    block.move_back()
-                    block.above = True
-#            else:
-#                block.above = False
-#                block.below = False
-#                block.left = False
-#                block.right = False
-        
-    def move_back(self):
-        self.rect.centerx = self.old_x
-        self.rect.centery = self.old_y
-        self.feet.midbottom = self.rect.midbottom
-
-
-#CLASS TO HANDLE DIFFERENT LEVELS (ROOMS)
+# CLASS TO HANDLE DIFFERENT LEVELS (ROOMS)
 class Room(object):
     def __init__(self, player, filename, screen, sound_file):
         self.player = player
@@ -823,7 +815,7 @@ class Room(object):
         self.moves = list()
         self.moves_names = list()
         self.music = sound_file
-        print (self.tmx_data.properties)
+        print(self.tmx_data.properties)
         for object in self.tmx_data.objects:
             if object.name == 'wall':
                 self.wall_list.append(pygame.Rect(object.x,object.y,object.width,object.height))
@@ -831,9 +823,9 @@ class Room(object):
                 chest = Chest(object.x,object.y,object.width,object.height)
                 chest.items = (object.name[6:].split("."))
                 self.chest_list.append(chest)
-                self.wall_list.append(pygame.Rect(object.x+6,object.y+6,object.width-12,object.height-12))
+                self.wall_list.append(pygame.Rect(object.x+6, object.y+6, object.width-12, object.height-12))
             else:
-                self.moves.append(pygame.Rect(object.x,object.y,object.width,object.height))
+                self.moves.append(pygame.Rect(object.x, object.y, object.width, object.height))
                 self.moves_names.append(object.name)
         map_data = pyscroll.data.TiledMapData(self.tmx_data)
         self.map_layer = pyscroll.BufferedRenderer(map_data, self.screen.get_size())
@@ -850,9 +842,9 @@ class Room(object):
         self.group.center(self.player.rect.center)
         self.group.draw(screen)
 
-    def update(self,dist,time,condition):
-        self.enemy_sprites.update(dist/2,time,condition,self.player)
-        self.npcs.update(dist,time,condition)
+    def update(self, dist, time, condition):
+        self.enemy_sprites.update(dist/2, time, condition, self.player)
+        self.npcs.update(dist, time, condition)
         for enemy in self.enemy_sprites:
             if enemy.feet.collidelist(self.wall_list) > -1:
                 enemy.move_back()            
@@ -1041,7 +1033,7 @@ class COSstairR(Room):
 
 class COSstairL(Room):
     def __init__(self,player,screen):
-        Room.__init__(self,player,'levels/COSstairL.tmx',screen,"data/music/Songtest.ogg")
+        Room.__init__(self, player, 'levels/COSstairL.tmx', screen, "data/music/Songtest.ogg")
 
     def new_room(self, place):
         if place == "COSfoyer":

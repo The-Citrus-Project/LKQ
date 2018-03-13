@@ -77,7 +77,7 @@ def main():
     rooms.append(COSBstair0(player, screen))
     rooms.append(COSBdining(player, screen))
     rooms.append(COSBstair1(player, screen))
-    current_room_no = 2
+    current_room_no = 12
     current_room = rooms[current_room_no]
     last_room_no = 1    
     room_names.append("grass_test")
@@ -102,7 +102,7 @@ def main():
     # VARIABLES
 
     # Text variables
-    text_speed = 7                      
+    text_speed = 5
     test_text = "Kill all on sight. text box at 400 y-pixels!"
     text_displayed = False
     text_display = ""
@@ -171,34 +171,35 @@ def main():
                     if event.key == pygame.K_9:
                         game_speed += -5
                     # Change text speed
-                    if text_displayed == True:
+                    if text_displayed:
                         if event.key == pygame.K_k:
                             text_speed = 1
                     # If Player is beside NPC display text box
                     if event.key == pygame.K_j:
-                        if len(current_room.npcs) > 0:
-                            for npc in current_room.npcs:
-                                if not text_displayed:
-                                    if npc.left or npc.right or npc.above or npc.below == True:
-                                        test_text = npc.text
-                                        text_display = ""
-                                        text_displayed = True
-                                elif text_displayed:
-                                    text_displayed = False
+                        if not text_displayed:
+                            if len(current_room.npcs) > 0:
+                                for npc in current_room.npcs:
+                                    if not text_displayed:
+                                        if npc.left or npc.right or npc.above or npc.below:
+                                            test_text = npc.text
+                                            text_display = ""
+                                            text_displayed = True
+                        elif text_displayed:
+                            text_displayed = False
                         if len(current_room.chest_list) > 0:
                             for chest in current_room.chest_list:
                                 if chest.contact:
                                     chest.take_items(player)
-                    if len(current_room.npcs) > 0:
-                        for npc in current_room.npcs:
-                            if event.key == pygame.K_j:
-                                if not text_displayed:
-                                    if npc.left or npc.right or npc.above or npc.below is True:
-                                        test_text = npc.text
-                                        text_display = ""
-                                        text_displayed = True
-                                elif text_displayed:
-                                    text_displayed = False
+                    # if len(current_room.npcs) > 0:
+                    #     for npc in current_room.npcs:
+                    #         if event.key == pygame.K_j:
+                    #             if not text_displayed:
+                    #                 if npc.left or npc.right or npc.above or npc.below is True:
+                    #                     test_text = npc.text
+                    #                     text_display = ""
+                    #                     text_displayed = True
+                    #             elif text_displayed:
+                    #                 text_displayed = False
                     elif event.key == K_EQUALS:
                         current_room.map_layer.zoom += .25
 
@@ -215,7 +216,7 @@ def main():
                             save_file = "data/save files/save_2.txt"
                         elif current_save == 3:
                             save_file = "data/save files/save_3.txt"
-                        f = open(save_file,"w")
+                        f = open(save_file, "w")
                         f.write(str(player.rect.x) + "\n")
                         f.write(str(player.rect.y) + "\n")
                         f.write(player.direction + "\n")
@@ -240,7 +241,7 @@ def main():
                             save_file = "data/save files/save_2.txt"
                         elif current_save == 3:
                             save_file = "data/save files/save_3.txt"
-                        f = open(save_file,"r")
+                        f = open(save_file, "r")
                         player.rect.x = int(f.readline())
                         player.rect.y = int(f.readline())
                         player.direction = f.readline()[0:-1]
@@ -368,10 +369,10 @@ def main():
             display_money(screen, str(player.money))
             # Text Boxes
             if text_displayed:
-                display_text(screen,WIN_WIDTH,WIN_HEIGHT,text_display)
+                display_text(screen, WIN_WIDTH, WIN_HEIGHT, text_display)
                 if time % text_speed == 0:
-                    text_display += test_text[:1]
-                    test_text = test_text[1:]
+                    text_display += test_text[:2]
+                    test_text = test_text[2:]
             
             # debugging code
             texx("X: ", 5, 100, screen, RED, 20)
@@ -476,8 +477,8 @@ def main():
             if all(deadplayers):
                 game_mode = 1
                 player.battle_trigger = None
-                deadplayers = [0,0,0]
-                deadenemies = [0,0,0]
+                deadplayers = [0, 0, 0]
+                deadenemies = [0, 0, 0]
                 for hero in players:
                     hero.stats['hp'] = hero.stats['hp_max']
                     hero.status = 'alive'
