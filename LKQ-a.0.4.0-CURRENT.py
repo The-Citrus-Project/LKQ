@@ -11,12 +11,12 @@ Lemon Kingdom Quest: The Sorceror Arises
 - NPC Text: Almyra Nayelie, Daniel Hunter
 - Special Thanks: James Jamison
 """
-#CHANGES FROM PREVIOUS VERSION:
+# CHANGES FROM PREVIOUS VERSION:
 """
 - SPLIT INTO MAIN AND LIBRARY
 - BUG FIXES
 """
-#TO DO:             
+# TO DO:
 """
 - CHANGE HERO AND ENEMY CLASSES TO RPG STYLE (done)
 - SEPERATE LOOP INTO 4 SEGMENTS FOR DIFFERENT GAME MODES (done)
@@ -27,24 +27,25 @@ from LKQ_Library import *
 
 HERO_MOVE_SPEED = 200  # pixels per second
 MAP_FILENAME = 'grasslands.tmx'               
-    
-#MAIN GAME CODE
+
+
+# MAIN GAME CODE
 def main():
     
-    #INITIALIZATION
+    # INITIALIZATION
     pygame.init()
     pygame.mixer.init()
     pygame.font.init()
     screen = init_screen(WIN_WIDTH, WIN_HEIGHT)
     pygame.display.set_caption('Lemon Kingdom Quest: The Sorceror Arises')
     
-    #SETUP
+    # SETUP
     
-    #Player Creation
+    # Player Creation
     movingsprites = pygame.sprite.Group()
-    player = Hero(180,180,"P1", 150, 150, 150, 150, 150, 0, 100000, 30)
-    bob = Hero(180,180,"P2", 150, 150, 150, 150, 140, 0, 100000, 30)
-    bob2 = Hero(180,180,"P3", 150, 150, 150, 150, 136, 0, 100000, 30)
+    player = Hero(180, 180, "P1", 150, 150, 150, 150, 150, 0, 100000, 30)
+    bob = Hero(180, 180, "P2", 150, 150, 150, 150, 140, 0, 100000, 30)
+    bob2 = Hero(180, 180, "P3", 150, 150, 150, 150, 136, 0, 100000, 30)
     movingsprites.add(player)
     movingsprites.add(bob)
     movingsprites.add(bob2)
@@ -54,29 +55,28 @@ def main():
         man.armour = Ruby_vest(1, 0)
         man.update() 
 
-    #Room Setup
-    battles = []
-    battles.append(Battle_Test(players, screen))
+    # Room Setup
+    battles = [Battle_Test(players, screen)]
     rooms = []
     room_names = []
-    rooms.append(grass_test(player,screen))
-    rooms.append(grass_test2(player,screen))
-    rooms.append(COSthroneroom(player,screen))
-    rooms.append(COSchestTR(player,screen))
-    rooms.append(COSchestLR(player,screen))
-    rooms.append(COSchestTL(player,screen))
-    rooms.append(COSchestLL(player,screen))
-    rooms.append(COSfoyer(player,screen))
-    rooms.append(COSstairR(player,screen))
-    rooms.append(COSstairL(player,screen))
-    rooms.append(COSTstair(player,screen))
-    rooms.append(COSThallway(player,screen))
-    rooms.append(COSTscribe(player,screen))
-    rooms.append(COSTlounge(player,screen))
-    rooms.append(COSTarmoury(player,screen))
-    rooms.append(COSBstair0(player,screen))
-    rooms.append(COSBdining(player,screen))
-    rooms.append(COSBstair1(player,screen))
+    rooms.append(grass_test(player, screen))
+    rooms.append(grass_test2(player, screen))
+    rooms.append(COSthroneroom(player, screen))
+    rooms.append(COSchestTR(player, screen))
+    rooms.append(COSchestLR(player, screen))
+    rooms.append(COSchestTL(player, screen))
+    rooms.append(COSchestLL(player, screen))
+    rooms.append(COSfoyer(player, screen))
+    rooms.append(COSstairR(player, screen))
+    rooms.append(COSstairL(player, screen))
+    rooms.append(COSTstair(player, screen))
+    rooms.append(COSThallway(player, screen))
+    rooms.append(COSTscribe(player, screen))
+    rooms.append(COSTlounge(player, screen))
+    rooms.append(COSTarmoury(player, screen))
+    rooms.append(COSBstair0(player, screen))
+    rooms.append(COSBdining(player, screen))
+    rooms.append(COSBstair1(player, screen))
     current_room_no = 2
     current_room = rooms[current_room_no]
     last_room_no = 1    
@@ -99,16 +99,16 @@ def main():
     room_names.append("COSBdining")
     room_names.append("COSBstair1")
     
-    #VARIABLES
+    # VARIABLES
 
-    #Text variables
+    # Text variables
     text_speed = 7                      
     test_text = "Kill all on sight. text box at 400 y-pixels!"
     text_displayed = False
     text_display = ""
     HeroName = "bob"
 
-    #Sound Variables
+    # Sound Variables
     music_volume = 1
     SFX_volume = 1
     sword_swing = pygame.mixer.Sound("data/sounds/sword.ogg")
@@ -119,35 +119,35 @@ def main():
     pygame.mixer.music.set_volume(music_volume)
     pygame.mixer.music.play(-1)
     
-    #Battle Variables
+    # Battle Variables
     deadplayers = [0, 0, 0]
     deadenemies = [0, 0, 0]
     display1, display2, display3, display4 = "", "", "", ""
     text1, text2, text3, text4 = "", "", "", ""
     
-    #Misc.    
+    # Misc.
     time = 0
     speed = 6
-    move_speed = speed #* current_room.map_layer.zoom
+    move_speed = speed  # * current_room.map_layer.zoom
     current_save = 1
     game_speed = 30
-    game_mode = 1 # 0 - Start Screens, 1 - Overworld, 2 - Battle, 3 - Pause Menus
+    game_mode = 1        # 0 - Start Screens, 1 - Overworld, 2 - Battle, 3 - Pause Menus
     clock = pygame.time.Clock()
     running = True
 
     while running:        
-        #dt = clock.tick()/1000
+        # dt = clock.tick()/1000
         poll = pygame.event.poll
         event = poll()
         
-        #EVENT HANDLING
+        # EVENT HANDLING
         while event:
             if event.type == QUIT:
                 running = False
                 break
             elif event.type == KEYDOWN:
                 if game_mode == 1:    
-                    #Battle debugging
+                    # Battle debugging
                     if event.key == pygame.K_b:
                         game_mode = 2
                         player.rect.x = 500
@@ -157,7 +157,7 @@ def main():
                         bob2.rect.x = 640
                         bob2.rect.y = 270
                         break
-                    #Text debugging
+                    # Text debugging
                     if event.key == pygame.K_5:
                         text_displayed = True
                     if event.key == pygame.K_6:
@@ -165,39 +165,39 @@ def main():
                     if event.key == pygame.K_7:
                         test_text = "Happy is the man who dies"
                         text_display = ""
-                    #Change game speed
+                    # Change game speed
                     if event.key == pygame.K_0:
                         game_speed += 5
                     if event.key == pygame.K_9:
                         game_speed += -5
-                    #Change text speed
+                    # Change text speed
                     if text_displayed == True:
                         if event.key == pygame.K_k:
                             text_speed = 1
-                    #If Player is beside NPC display text box
+                    # If Player is beside NPC display text box
                     if event.key == pygame.K_j:
                         if len(current_room.npcs) > 0:
                             for npc in current_room.npcs:
-                                if text_displayed == False:
+                                if not text_displayed:
                                     if npc.left or npc.right or npc.above or npc.below == True:
                                         test_text = npc.text
                                         text_display = ""
                                         text_displayed = True
-                                elif text_displayed == True:
+                                elif text_displayed:
                                     text_displayed = False
                         if len(current_room.chest_list) > 0:
                             for chest in current_room.chest_list:
-                                if chest.contact == True:
+                                if chest.contact:
                                     chest.take_items(player)
                     if len(current_room.npcs) > 0:
                         for npc in current_room.npcs:
                             if event.key == pygame.K_j:
-                                if text_displayed == False:
-                                    if npc.left or npc.right or npc.above or npc.below == True:
+                                if not text_displayed:
+                                    if npc.left or npc.right or npc.above or npc.below is True:
                                         test_text = npc.text
                                         text_display = ""
                                         text_displayed = True
-                                elif text_displayed == True:
+                                elif text_displayed:
                                     text_displayed = False
                     elif event.key == K_EQUALS:
                         current_room.map_layer.zoom += .25
@@ -207,7 +207,7 @@ def main():
                         if value > 0:
                             current_room.map_layer.zoom = value
 
-                    #TEMPORARY SAVING METHOD, REMOVE IN THE FUTURE
+                    # TEMPORARY SAVING METHOD, REMOVE IN THE FUTURE
                     if event.key == K_v:
                         if current_save == 1:
                             save_file = "data/save files/save_1.txt"
@@ -232,7 +232,7 @@ def main():
                         f.write(str(player.money) + "\n")
                         f.close()
                             
-                    #TEMPORARY LOADING METHOD, REMOVE IN THE FUTURE
+                    # TEMPORARY LOADING METHOD, REMOVE IN THE FUTURE
                     if event.key == K_c:
                         if current_save == 1:
                             save_file = "data/save files/save_1.txt"
@@ -258,24 +258,22 @@ def main():
                         pygame.mixer.music.set_volume(music_volume)
                         pygame.mixer.music.play(-1)
                         
-                        
-                    #if text is displayed stop all motion
-                    if text_displayed == True:
+                    # if text is displayed stop all motion
+                    if text_displayed:
                         player.change_x = 0
                         player.change_y = 0
 
-                    #if text is not displayed control player motion
-                    if text_displayed == False:
-                        #player movements            
+                    # if text is not displayed control player motion
+                    if not text_displayed:
+                        # player movements
                         if event.key == K_UP or event.key == K_w:
-                            player.changespeed(0, -move_speed, "up")
+                            player.changespeed(0, -move_speed)
                         elif event.key == K_DOWN or event.key == K_s:
-                            player.changespeed(0, move_speed, "down")
+                            player.changespeed(0, move_speed)
                         elif event.key == K_LEFT or event.key == K_a:
-                            player.changespeed(-move_speed, 0, "left")
+                            player.changespeed(-move_speed, 0)
                         elif event.key == K_RIGHT or event.key == K_d:
-                            player.changespeed(move_speed, 0, "right")
-                    
+                            player.changespeed(move_speed, 0)
                 
                 if game_mode == 2:
                     if event.key == K_o:
@@ -284,13 +282,13 @@ def main():
                         player.stats['hp'] += 10
                         
                     if event.key == K_UP or event.key == K_w:
-                        player.changespeed(0, -move_speed, "up")
+                        player.changespeed(0, -move_speed)
                     elif event.key == K_DOWN or event.key == K_s:
-                        player.changespeed(0, move_speed, "down")
+                        player.changespeed(0, move_speed)
                     elif event.key == K_LEFT or event.key == K_a:
-                        player.changespeed(-move_speed, 0, "left")
+                        player.changespeed(-move_speed, 0)
                     elif event.key == K_RIGHT or event.key == K_d:
-                        player.changespeed(move_speed, 0, "right")
+                        player.changespeed(move_speed, 0)
                     if event.key == pygame.K_b:
                         game_mode = 1
                         player.battle_trigger = None
@@ -300,48 +298,40 @@ def main():
                     break                
             elif event.type == KEYUP:
                 if game_mode == 1:
-                    #Change text speed
-                    if text_displayed == True:
+                    # Change text speed
+                    if text_displayed:
                         if event.key == pygame.K_k:
                             text_speed = 7
-                    elif text_displayed == False:
+                    elif not text_displayed:
                             
                         if event.key == K_UP or event.key == K_w :
                             player.change_y = 0
-                            player.direction = player.direction
                         elif event.key == K_DOWN or event.key == K_s:
                             player.change_y = 0
-                            player.direction = player.direction
                         elif event.key == K_LEFT or event.key == K_a:
                             player.change_x = 0
-                            player.direction = player.direction
                         elif event.key == K_RIGHT or event.key == K_d:
                             player.change_x = 0
-                            player.direction = player.direction
                 if game_mode == 2:
                     if event.key == K_UP or event.key == K_w :
                         player.change_y = 0
-                        player.direction = player.direction
                     elif event.key == K_DOWN or event.key == K_s:
                         player.change_y = 0
-                        player.direction = player.direction
                     elif event.key == K_LEFT or event.key == K_a:
                         player.change_x = 0
-                        player.direction = player.direction
                     elif event.key == K_RIGHT or event.key == K_d:
                         player.change_x = 0
-                        player.direction = player.direction
-           # this will be handled if the window is resized
+            # this will be handled if the window is resized
             elif event.type == VIDEORESIZE:
                     init_screen(event.w, event.h)
                     current_room.map_layer.set_size((event.w, event.h))                    
             event = poll()
-        #GAME LOGIC
+        # GAME LOGIC
         if game_mode == 1:
             current_room.update(10*current_room.map_layer.zoom,time,text_displayed)
-            player.move(current_room.wall_list,current_room.enemy_sprites,current_room.npcs,current_room.chest_list,current_room,(player.rect.width/2),time)
+            player.move(current_room.wall_list, current_room.enemy_sprites, current_room.npcs, current_room.chest_list, current_room, (player.rect.width/2), time)
             
-            if player.battle_trigger != None:
+            if player.battle_trigger is not None:
                 game_mode = 2
                 player.rect.x = 500
                 player.rect.y = 300
@@ -354,12 +344,12 @@ def main():
                 pygame.mixer.music.set_volume(music_volume)
                 pygame.mixer.music.play(-1)
     
-            #Handle room changes
+            # Handle room changes
             if player.rect.collidelist(current_room.moves) > -1:
                 last_room_no = current_room_no
                 current_room_no = room_names.index((current_room.moves_names[player.rect.collidelist(current_room.moves)]))
                 current_room = rooms[current_room_no]
-                (player.rect.x,player.rect.y, player.direction) = current_room.new_room(room_names[last_room_no])
+                (player.rect.x, player.rect.y, player.direction) = current_room.new_room(room_names[last_room_no])
                 player.old_x = player.rect.x
                 player.old_y = player.rect.y
                 player.change_x = 0
@@ -372,30 +362,30 @@ def main():
                     pygame.mixer.music.set_volume(music_volume)
                     pygame.mixer.music.play(-1)
 
-            #DRAWING CODE
+            # DRAWING CODE
             current_room = rooms[current_room_no]
             current_room.draw(screen)
-            display_money(screen,str(player.money))
-            #Text Boxes
-            if text_displayed == True:
+            display_money(screen, str(player.money))
+            # Text Boxes
+            if text_displayed:
                 display_text(screen,WIN_WIDTH,WIN_HEIGHT,text_display)
                 if time % text_speed == 0:
                     text_display += test_text[:1]
                     test_text = test_text[1:]
             
-            #debugging code
-            texx("X: ",5,100,screen,RED,20)
-            texx(str(player.rect.x),40,100,screen,RED,20)
-            texx("Y: ",5,120,screen,RED,20)
-            texx(str(player.rect.y),40,120,screen,RED,20)
-            texx("FPS: ",5,150,screen,RED,20)
-            texx(str(round(clock.get_fps(), 0)),60,150,screen,RED,20)
+            # debugging code
+            texx("X: ", 5, 100, screen, RED, 20)
+            texx(str(player.rect.x), 40, 100, screen, RED, 20)
+            texx("Y: ", 5, 120, screen, RED, 20)
+            texx(str(player.rect.y), 40, 120, screen, RED, 20)
+            texx("FPS: ", 5, 150, screen, RED, 20)
+            texx(str(round(clock.get_fps(), 0)), 60, 150, screen, RED, 20)
 
-            #keep track of time
+            # keep track of time
         if game_mode == 2:
             battles[0].draw(screen)
-            battles[0].update(10*current_room.map_layer.zoom,time,text_displayed)
-            player.moveb(battles[0].wall_list,player.rect.width/2,time)
+            battles[0].update(10*current_room.map_layer.zoom, time, text_displayed)
+            player.moveb(battles[0].wall_list, player.rect.width/2, time)
             bob.moveb(battles[0].wall_list, bob.rect.width / 2, time)
             bob2.moveb(battles[0].wall_list, bob2.rect.width / 2, time)
             # bob.rect.x, bob.rect.y = player.rect.x + 70, player.rect.y
@@ -410,13 +400,13 @@ def main():
             fast_player = players[0]
             for enemy in enemies:
                 enemy.tick = battle_tick * enemy.stats['speed']/fast_player.stats['speed']
-                #print (enemy.name, enemy.stats['hp'], enemy.level)
+                # print (enemy.name, enemy.stats['hp'], enemy.level)
                 for hero in players:
                     if hero.type == enemy.bias:
                         enemy.aggro[players.index(hero)] = 10000
             for hero in players:
                 hero.tick = battle_tick * hero.stats['speed']/fast_player.stats['speed']
-                #print (hero.name, hero.stats['hp'], hero.level)
+                # print (hero.name, hero.stats['hp'], hero.level)
             for enemy in enemies:
                 for hero in players:
                     if hero.status == 'dead':
@@ -433,7 +423,7 @@ def main():
                         enemy.rect.centery -= 40
                         enemy.feet.midbottom = enemy.rect.midbottom
                         damage = damaged(enemy, target, move)
-                        target.stats['hp']  -= damage
+                        target.stats['hp'] -= damage
                         text1, text2, text3, text4, display1, display2, display3, display4 = text_queue(text1, text2, text3, text4, display1, display2, display3, display4, ("%s dealt %i damage to %s using %s." %(enemy.name, damage,  target.name,  move[0]) ))
                         enemy.gauge = 0
                         if target.stats['hp'] <= 0:
@@ -442,9 +432,7 @@ def main():
                             target.status = 'dead'
                             text_display = ""
                     enemy.gauge += enemy.tick
-                    
-                
-                
+
             for hero in players:
                 if hero.status == 'dead':
                     hero.stats['hp'] = 0
@@ -453,7 +441,7 @@ def main():
                 else:
                     if hero.gauge >= 100:
                         targ = randint(0, len(enemies) - 1)
-                        while (enemies[targ].status == 'dead'):
+                        while enemies[targ].status == 'dead':
                             targ = randint(0, len(enemies) - 1)
                         target = enemies[targ]
                         hero.rect.centery -= 40
@@ -521,7 +509,6 @@ def main():
     pygame.quit()
 
 
-                               
 if __name__ == "__main__":
     try:
         main()
