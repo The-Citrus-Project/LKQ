@@ -858,7 +858,7 @@ class Room(object):
                 sprite.move_back()
 
 
-class Battle_Room(object):
+class BattleRoom(object):
     def __init__(self, players, filename, screen, sound_file):
         self.players = players
         self.filename = filename
@@ -868,7 +868,7 @@ class Battle_Room(object):
         self.wall_list = list()
         self.enemy_sprites = pygame.sprite.Group()
         self.music = sound_file
-        print (self.tmx_data.properties)
+        print(self.tmx_data.properties)
         for object in self.tmx_data.objects:
             self.wall_list.append(pygame.Rect(object.x,object.y,object.width,object.height))
         map_data = pyscroll.data.TiledMapData(self.tmx_data)
@@ -886,7 +886,7 @@ class Battle_Room(object):
         for man in self.group:
             man.drawh(screen)
 
-    def update(self,dist,time,condition):
+    def update(self):
         for enemy in self.enemy_sprites:
             if enemy.feet.collidelist(self.wall_list) > -1:
                 enemy.move_back()            
@@ -896,10 +896,38 @@ class Battle_Room(object):
                 sprite.move_back()
 
 
+class PauseRoom(object):
+    def __init__(self, player, filename, screen, sound_file):
+        self.player = player
+        self.filename = filename
+        self.screen = screen
+        self.file = get_map(self.filename)
+        self.tmx_data = load_pygame(self.file)
+        self.music = sound_file
+        print(self.tmx_data.properties)
+        map_data = pyscroll.data.TiledMapData(self.tmx_data)
+        self.map_layer = pyscroll.BufferedRenderer(map_data, self.screen.get_size())
+        self.map_layer.zoom = 1
+        self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=2)
+        self.group.add(self.player)
+
+    def draw(self, screen):
+        screen.fill(BLACK)
+        self.group.center((400, 300))
+        self.group.draw(screen)
+        for man in self.group:
+            man.drawh(screen)
+
+
 # BATTLE TEST LEVEL
-class Battle_Test(Battle_Room):
+class BattleTest(BattleRoom):
     def __init__(self, players, screen):
-        Battle_Room.__init__(self, players, 'levels/battle.tmx', screen, "data/music/battle.wav")
+        BattleRoom.__init__(self, players, 'levels/battle.tmx', screen, "data/music/battle.wav")
+
+
+class PauseTest(PauseRoom):
+    def __init__(self, player, screen):
+        PauseRoom.__init__(self, player, 'levels/pause.tmx', screen, 'data/music/basement.wav')
 
 
 # FIRST TEST LEVEL
@@ -915,6 +943,7 @@ class grass_test(Room):
         enemy.target = False
         enemy.health = 1
         self.enemy_sprites.add(enemy)
+
     def new_room(self, place):
         if place == "grass_test2":
             return (900, 740)

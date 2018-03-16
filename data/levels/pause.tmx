@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="32" height="24" tilewidth="25" tileheight="25" nextobjectid="45">
+ <tileset firstgid="1" name="COS" tilewidth="25" tileheight="25" tilecount="289" columns="17">
+  <image source="COS.png" width="448" height="448"/>
+ </tileset>
+ <tileset firstgid="290" name="revolution_grasslands" tilewidth="25" tileheight="25" tilecount="288" columns="12">
+  <image source="revolution_grasslands.png" width="320" height="608"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="32" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztwwENAAAMw6DKm39FF3JIWDVVVfXFAwgO2AE=
+  </data>
+ </layer>
+</map>

@@ -56,7 +56,8 @@ def main():
         man.update() 
 
     # Room Setup
-    battles = [Battle_Test(players, screen)]
+    battles = [BattleTest(players, screen)]
+    pauses = [PauseTest(player, screen)]
     rooms = []
     room_names = []
     rooms.append(grass_test(player, screen))
@@ -156,6 +157,15 @@ def main():
                         bob.rect.y = 320
                         bob2.rect.x = 640
                         bob2.rect.y = 270
+                        break
+                    if event.key == pygame.K_p:
+                        game_mode = 3
+                        player.rect.x = -100
+                        player.rect.y = -100
+                        pygame.mixer.music.fadeout(fade_time)
+                        pygame.mixer.music.load(pauses[0].music)
+                        pygame.mixer.music.set_volume(music_volume)
+                        pygame.mixer.music.play(-1)
                         break
                     # Text debugging
                     if event.key == pygame.K_5:
@@ -275,7 +285,6 @@ def main():
                             player.changespeed(-move_speed, 0)
                         elif event.key == K_RIGHT or event.key == K_d:
                             player.changespeed(move_speed, 0)
-                
                 if game_mode == 2:
                     if event.key == K_o:
                         player.stats['hp'] -= 10
@@ -293,6 +302,16 @@ def main():
                     if event.key == pygame.K_b:
                         game_mode = 1
                         player.battle_trigger = None
+                        break
+                if game_mode == 3:
+                    if event.key == pygame.K_p:
+                        game_mode = 1
+                        player.rect.x = player.old_x
+                        player.rect.y = player.old_y
+                        pygame.mixer.music.fadeout(fade_time)
+                        pygame.mixer.music.load(current_room.music)
+                        pygame.mixer.music.set_volume(music_volume)
+                        pygame.mixer.music.play(-1)
                         break
                 if event.key == K_ESCAPE:
                     running = False
@@ -385,7 +404,7 @@ def main():
             # keep track of time
         if game_mode == 2:
             battles[0].draw(screen)
-            battles[0].update(10*current_room.map_layer.zoom, time, text_displayed)
+            battles[0].update()
             player.moveb(battles[0].wall_list, player.rect.width/2, time)
             bob.moveb(battles[0].wall_list, bob.rect.width / 2, time)
             bob2.moveb(battles[0].wall_list, bob2.rect.width / 2, time)
@@ -503,6 +522,8 @@ def main():
                 pygame.mixer.music.load(current_room.music)
                 pygame.mixer.music.set_volume(music_volume)
                 pygame.mixer.music.play(-1)
+        if game_mode == 3:
+            pauses[0].draw(screen)
         time += 1
         clock.tick(game_speed)
         pygame.display.flip()
