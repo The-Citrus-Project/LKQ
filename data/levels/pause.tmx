@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="32" height="24" tilewidth="25" tileheight="25" nextobjectid="45">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="32" height="24" tilewidth="25" tileheight="25" nextobjectid="56">
  <tileset firstgid="1" name="COS" tilewidth="25" tileheight="25" tilecount="289" columns="17">
   <image source="COS.png" width="448" height="448"/>
  </tileset>
@@ -8,7 +8,12 @@
  </tileset>
  <layer name="Tile Layer 1" width="32" height="24">
   <data encoding="base64" compression="zlib">
-   eJztwwENAAAMw6DKm39FF3JIWDVVVfXFAwgO2AE=
+   eJztwwENAAAMAiAfz/6FDHLY6CVVVVVfHBMq3gE=
   </data>
  </layer>
+ <objectgroup name="Object Layer 1">
+  <object id="51" name="Quit" x="250" y="425" width="300" height="100"/>
+  <object id="53" name="Save" x="250" y="75" width="300" height="100"/>
+  <object id="55" name="Return" x="250" y="250" width="300" height="100"/>
+ </objectgroup>
 </map>

@@ -125,7 +125,10 @@ def main():
     deadenemies = [0, 0, 0]
     display1, display2, display3, display4 = "", "", "", ""
     text1, text2, text3, text4 = "", "", "", ""
-    
+
+    # Pause Variables
+    pauseoption = 0
+
     # Misc.
     time = 0
     speed = 6
@@ -313,6 +316,12 @@ def main():
                         pygame.mixer.music.set_volume(music_volume)
                         pygame.mixer.music.play(-1)
                         break
+                    if event.key == K_DOWN or event.key == K_s:
+                        pauseoption += 1
+                        pauseoption %= 3
+                    elif event.key == K_UP or event.key == K_w:
+                        pauseoption -= 1
+                        pauseoption %= 3
                 if event.key == K_ESCAPE:
                     running = False
                     break                
@@ -523,7 +532,7 @@ def main():
                 pygame.mixer.music.set_volume(music_volume)
                 pygame.mixer.music.play(-1)
         if game_mode == 3:
-            pauses[0].draw(screen)
+            pauses[0].draw(screen, pauseoption)
         time += 1
         clock.tick(game_speed)
         pygame.display.flip()

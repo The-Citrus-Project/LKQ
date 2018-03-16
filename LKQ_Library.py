@@ -818,9 +818,9 @@ class Room(object):
         print(self.tmx_data.properties)
         for object in self.tmx_data.objects:
             if object.name == 'wall':
-                self.wall_list.append(pygame.Rect(object.x,object.y,object.width,object.height))
+                self.wall_list.append(pygame.Rect(object.x, object.y, object.width, object.height))
             elif object.name[0:6] == "chest:":
-                chest = Chest(object.x,object.y,object.width,object.height)
+                chest = Chest(object.x, object.y, object.width, object.height)
                 chest.items = (object.name[6:].split("."))
                 self.chest_list.append(chest)
                 self.wall_list.append(pygame.Rect(object.x+6, object.y+6, object.width-12, object.height-12))
@@ -905,18 +905,32 @@ class PauseRoom(object):
         self.tmx_data = load_pygame(self.file)
         self.music = sound_file
         print(self.tmx_data.properties)
+
         map_data = pyscroll.data.TiledMapData(self.tmx_data)
         self.map_layer = pyscroll.BufferedRenderer(map_data, self.screen.get_size())
         self.map_layer.zoom = 1
         self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=2)
         self.group.add(self.player)
 
-    def draw(self, screen):
+    def draw(self, screen, option):
         screen.fill(BLACK)
         self.group.center((400, 300))
         self.group.draw(screen)
         for man in self.group:
             man.drawh(screen)
+        for object in self.tmx_data.objects:
+            if (object.name == "Save") & (option == 0):
+                pygame.draw.rect(screen, GREEN, (object.x, object.y, object.width, object.height))
+            elif (object.name == "Return") & (option == 1):
+                pygame.draw.rect(screen, GREEN, (object.x, object.y, object.width, object.height))
+            elif (object.name == "Quit") & (option == 2):
+                pygame.draw.rect(screen, GREEN, (object.x, object.y, object.width, object.height))
+            else:
+                pygame.draw.rect(screen, BLUE, (object.x, object.y, object.width, object.height))
+            myfont = pygame.font.SysFont("castellar", 60)
+            myfont.set_bold(True)
+            label = myfont.render(object.name, 1, RED)
+            screen.blit(label, (object.x + 50, object.y + 30))
 
 
 # BATTLE TEST LEVEL
