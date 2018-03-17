@@ -232,7 +232,6 @@ def main():
                         f = open(save_file, "w")
                         f.write(str(player.rect.x) + "\n")
                         f.write(str(player.rect.y) + "\n")
-                        f.write(player.direction + "\n")
                         f.write(str(current_room_no) + "\n")
                         f.write(HeroName + "\n")
                         f.write(str(player.money) + "\n")
@@ -240,7 +239,6 @@ def main():
                         f = open("data/save files/temp_save.txt","w")
                         f.write(str(player.rect.x) + "\n")
                         f.write(str(player.rect.y) + "\n")
-                        f.write(player.direction + "\n")
                         f.write(str(current_room_no) + "\n")
                         f.write(HeroName + "\n")
                         f.write(str(player.money) + "\n")
@@ -257,7 +255,6 @@ def main():
                         f = open(save_file, "r")
                         player.rect.x = int(f.readline())
                         player.rect.y = int(f.readline())
-                        player.direction = f.readline()[0:-1]
                         current_room_no = int(f.readline())
                         HeroName = f.readline()[0:-1]
                         player.money = int(f.readline())
@@ -322,6 +319,41 @@ def main():
                     elif event.key == K_UP or event.key == K_w:
                         pauseoption -= 1
                         pauseoption %= 3
+                    if event.key == K_j:
+                        if pauseoption == 0:
+                            if current_save == 1:
+                                save_file = "data/save files/save_1.txt"
+                            elif current_save == 2:
+                                save_file = "data/save files/save_2.txt"
+                            elif current_save == 3:
+                                save_file = "data/save files/save_3.txt"
+                            f = open(save_file, "w")
+                            f.write(str(player.old_x) + "\n")
+                            f.write(str(player.old_y) + "\n")
+                            f.write(str(current_room_no) + "\n")
+                            f.write(HeroName + "\n")
+                            f.write(str(player.money) + "\n")
+                            f.close()
+                            f = open("data/save files/temp_save.txt", "w")
+                            f.write(str(player.old_x) + "\n")
+                            f.write(str(player.old_y) + "\n")
+                            f.write(str(current_room_no) + "\n")
+                            f.write(HeroName + "\n")
+                            f.write(str(player.money) + "\n")
+                            f.close()
+                            print("Game has been saved!")
+                        elif pauseoption == 1:
+                            game_mode = 1
+                            player.rect.x = player.old_x
+                            player.rect.y = player.old_y
+                            pygame.mixer.music.fadeout(fade_time)
+                            pygame.mixer.music.load(current_room.music)
+                            pygame.mixer.music.set_volume(music_volume)
+                            pygame.mixer.music.play(-1)
+                            break
+                        elif pauseoption == 2:
+                            running = False
+                            break
                 if event.key == K_ESCAPE:
                     running = False
                     break                
@@ -517,7 +549,6 @@ def main():
                 f = open(save_file, "r")
                 player.rect.x = int(f.readline())
                 player.rect.y = int(f.readline())
-                player.direction = f.readline()[0:-1]
                 current_room_no = int(f.readline())
                 HeroName = f.readline()[0:-1]
                 player.money = int(f.readline())
