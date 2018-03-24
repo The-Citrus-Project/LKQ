@@ -93,7 +93,7 @@ def display_text(screen, w, h, text):
     """Function to display game text/npc dialogue to the screen."""
     pygame.draw.rect(screen, BLUE, (10, h - 90, w - 20, 80))
     pygame.draw.rect(screen, WHITE, (15, h - 85, w - 30, 70))
-    myfont = pygame.font.SysFont("castellar", 20)
+    myfont = pygame.font.SysFont("castelar", 20)
     myfont.set_bold(True)
     label = myfont.render(text, 1, BLACK)
     screen.blit(label, (20, h - 80))
@@ -103,7 +103,7 @@ def battle_text(screen, text1, text2, text3, text4):
     """Function (that probably needs a rewrite) to display text during the battle phase."""
     pygame.draw.rect(screen, BLUE, (10, 400, 780, 190))
     pygame.draw.rect(screen, WHITE, (15, 405, 770, 180))
-    myfont = pygame.font.SysFont("castellar", 25)
+    myfont = pygame.font.SysFont("castelar", 25)
     myfont.set_bold(False)
     label1 = myfont.render(text1, 1, BLACK)
     label2 = myfont.render(text2, 1, BLACK)
@@ -818,9 +818,9 @@ class Room(object):
         print(self.tmx_data.properties)
         for object in self.tmx_data.objects:
             if object.name == 'wall':
-                self.wall_list.append(pygame.Rect(object.x,object.y,object.width,object.height))
+                self.wall_list.append(pygame.Rect(object.x, object.y, object.width, object.height))
             elif object.name[0:6] == "chest:":
-                chest = Chest(object.x,object.y,object.width,object.height)
+                chest = Chest(object.x, object.y, object.width, object.height)
                 chest.items = (object.name[6:].split("."))
                 self.chest_list.append(chest)
                 self.wall_list.append(pygame.Rect(object.x+6, object.y+6, object.width-12, object.height-12))
@@ -858,7 +858,7 @@ class Room(object):
                 sprite.move_back()
 
 
-class Battle_Room(object):
+class BattleRoom(object):
     def __init__(self, players, filename, screen, sound_file):
         self.players = players
         self.filename = filename
@@ -868,7 +868,7 @@ class Battle_Room(object):
         self.wall_list = list()
         self.enemy_sprites = pygame.sprite.Group()
         self.music = sound_file
-        print (self.tmx_data.properties)
+        print(self.tmx_data.properties)
         for object in self.tmx_data.objects:
             self.wall_list.append(pygame.Rect(object.x,object.y,object.width,object.height))
         map_data = pyscroll.data.TiledMapData(self.tmx_data)
@@ -886,7 +886,7 @@ class Battle_Room(object):
         for man in self.group:
             man.drawh(screen)
 
-    def update(self,dist,time,condition):
+    def update(self):
         for enemy in self.enemy_sprites:
             if enemy.feet.collidelist(self.wall_list) > -1:
                 enemy.move_back()            
@@ -896,10 +896,52 @@ class Battle_Room(object):
                 sprite.move_back()
 
 
+class PauseRoom(object):
+    def __init__(self, player, filename, screen, sound_file):
+        self.player = player
+        self.filename = filename
+        self.screen = screen
+        self.file = get_map(self.filename)
+        self.tmx_data = load_pygame(self.file)
+        self.music = sound_file
+        print(self.tmx_data.properties)
+
+        map_data = pyscroll.data.TiledMapData(self.tmx_data)
+        self.map_layer = pyscroll.BufferedRenderer(map_data, self.screen.get_size())
+        self.map_layer.zoom = 1
+        self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=2)
+        self.group.add(self.player)
+
+    def draw(self, screen, option):
+        screen.fill(BLACK)
+        self.group.center((400, 300))
+        self.group.draw(screen)
+        for man in self.group:
+            man.drawh(screen)
+        for object in self.tmx_data.objects:
+            if (object.name == "Save") & (option == 0):
+                pygame.draw.rect(screen, GREEN, (object.x, object.y, object.width, object.height))
+            elif (object.name == "Return") & (option == 1):
+                pygame.draw.rect(screen, GREEN, (object.x, object.y, object.width, object.height))
+            elif (object.name == "Quit") & (option == 2):
+                pygame.draw.rect(screen, GREEN, (object.x, object.y, object.width, object.height))
+            else:
+                pygame.draw.rect(screen, BLUE, (object.x, object.y, object.width, object.height))
+            myfont = pygame.font.SysFont("castelar", 60)
+            myfont.set_bold(True)
+            label = myfont.render(object.name, 1, RED)
+            screen.blit(label, (object.x + 50, object.y + 30))
+
+
 # BATTLE TEST LEVEL
-class Battle_Test(Battle_Room):
+class BattleTest(BattleRoom):
     def __init__(self, players, screen):
-        Battle_Room.__init__(self, players, 'levels/battle.tmx', screen, "data/music/battle.wav")
+        BattleRoom.__init__(self, players, 'levels/battle.tmx', screen, "data/music/battle.wav")
+
+
+class PauseTest(PauseRoom):
+    def __init__(self, player, screen):
+        PauseRoom.__init__(self, player, 'levels/pause.tmx', screen, 'data/music/basement.wav')
 
 
 # FIRST TEST LEVEL
@@ -915,6 +957,7 @@ class grass_test(Room):
         enemy.target = False
         enemy.health = 1
         self.enemy_sprites.add(enemy)
+
     def new_room(self, place):
         if place == "grass_test2":
             return (900, 740)

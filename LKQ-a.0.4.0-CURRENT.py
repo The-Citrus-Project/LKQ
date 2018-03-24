@@ -56,7 +56,8 @@ def main():
         man.update() 
 
     # Room Setup
-    battles = [Battle_Test(players, screen)]
+    battles = [BattleTest(players, screen)]
+    pauses = [PauseTest(player, screen)]
     rooms = []
     room_names = []
     rooms.append(grass_test(player, screen))
@@ -124,7 +125,10 @@ def main():
     deadenemies = [0, 0, 0]
     display1, display2, display3, display4 = "", "", "", ""
     text1, text2, text3, text4 = "", "", "", ""
-    
+
+    # Pause Variables
+    pauseoption = 0
+
     # Misc.
     time = 0
     speed = 6
@@ -156,6 +160,15 @@ def main():
                         bob.rect.y = 320
                         bob2.rect.x = 640
                         bob2.rect.y = 270
+                        break
+                    if event.key == pygame.K_p:
+                        game_mode = 3
+                        player.rect.x = -100
+                        player.rect.y = -100
+                        pygame.mixer.music.fadeout(fade_time)
+                        pygame.mixer.music.load(pauses[0].music)
+                        pygame.mixer.music.set_volume(music_volume)
+                        pygame.mixer.music.play(-1)
                         break
                     # Text debugging
                     if event.key == pygame.K_5:
@@ -219,7 +232,6 @@ def main():
                         f = open(save_file, "w")
                         f.write(str(player.rect.x) + "\n")
                         f.write(str(player.rect.y) + "\n")
-                        f.write(player.direction + "\n")
                         f.write(str(current_room_no) + "\n")
                         f.write(HeroName + "\n")
                         f.write(str(player.money) + "\n")
@@ -227,7 +239,6 @@ def main():
                         f = open("data/save files/temp_save.txt","w")
                         f.write(str(player.rect.x) + "\n")
                         f.write(str(player.rect.y) + "\n")
-                        f.write(player.direction + "\n")
                         f.write(str(current_room_no) + "\n")
                         f.write(HeroName + "\n")
                         f.write(str(player.money) + "\n")
@@ -244,7 +255,6 @@ def main():
                         f = open(save_file, "r")
                         player.rect.x = int(f.readline())
                         player.rect.y = int(f.readline())
-                        player.direction = f.readline()[0:-1]
                         current_room_no = int(f.readline())
                         HeroName = f.readline()[0:-1]
                         player.money = int(f.readline())
@@ -275,7 +285,6 @@ def main():
                             player.changespeed(-move_speed, 0)
                         elif event.key == K_RIGHT or event.key == K_d:
                             player.changespeed(move_speed, 0)
-                
                 if game_mode == 2:
                     if event.key == K_o:
                         player.stats['hp'] -= 10
@@ -294,6 +303,57 @@ def main():
                         game_mode = 1
                         player.battle_trigger = None
                         break
+                if game_mode == 3:
+                    if event.key == pygame.K_p:
+                        game_mode = 1
+                        player.rect.x = player.old_x
+                        player.rect.y = player.old_y
+                        pygame.mixer.music.fadeout(fade_time)
+                        pygame.mixer.music.load(current_room.music)
+                        pygame.mixer.music.set_volume(music_volume)
+                        pygame.mixer.music.play(-1)
+                        break
+                    if event.key == K_DOWN or event.key == K_s:
+                        pauseoption += 1
+                        pauseoption %= 3
+                    elif event.key == K_UP or event.key == K_w:
+                        pauseoption -= 1
+                        pauseoption %= 3
+                    if event.key == K_j:
+                        if pauseoption == 0:
+                            if current_save == 1:
+                                save_file = "data/save files/save_1.txt"
+                            elif current_save == 2:
+                                save_file = "data/save files/save_2.txt"
+                            elif current_save == 3:
+                                save_file = "data/save files/save_3.txt"
+                            f = open(save_file, "w")
+                            f.write(str(player.old_x) + "\n")
+                            f.write(str(player.old_y) + "\n")
+                            f.write(str(current_room_no) + "\n")
+                            f.write(HeroName + "\n")
+                            f.write(str(player.money) + "\n")
+                            f.close()
+                            f = open("data/save files/temp_save.txt", "w")
+                            f.write(str(player.old_x) + "\n")
+                            f.write(str(player.old_y) + "\n")
+                            f.write(str(current_room_no) + "\n")
+                            f.write(HeroName + "\n")
+                            f.write(str(player.money) + "\n")
+                            f.close()
+                            print("Game has been saved!")
+                        elif pauseoption == 1:
+                            game_mode = 1
+                            player.rect.x = player.old_x
+                            player.rect.y = player.old_y
+                            pygame.mixer.music.fadeout(fade_time)
+                            pygame.mixer.music.load(current_room.music)
+                            pygame.mixer.music.set_volume(music_volume)
+                            pygame.mixer.music.play(-1)
+                            break
+                        elif pauseoption == 2:
+                            running = False
+                            break
                 if event.key == K_ESCAPE:
                     running = False
                     break                
@@ -385,7 +445,7 @@ def main():
             # keep track of time
         if game_mode == 2:
             battles[0].draw(screen)
-            battles[0].update(10*current_room.map_layer.zoom, time, text_displayed)
+            battles[0].update()
             player.moveb(battles[0].wall_list, player.rect.width/2, time)
             bob.moveb(battles[0].wall_list, bob.rect.width / 2, time)
             bob2.moveb(battles[0].wall_list, bob2.rect.width / 2, time)
@@ -489,7 +549,6 @@ def main():
                 f = open(save_file, "r")
                 player.rect.x = int(f.readline())
                 player.rect.y = int(f.readline())
-                player.direction = f.readline()[0:-1]
                 current_room_no = int(f.readline())
                 HeroName = f.readline()[0:-1]
                 player.money = int(f.readline())
@@ -503,6 +562,8 @@ def main():
                 pygame.mixer.music.load(current_room.music)
                 pygame.mixer.music.set_volume(music_volume)
                 pygame.mixer.music.play(-1)
+        if game_mode == 3:
+            pauses[0].draw(screen, pauseoption)
         time += 1
         clock.tick(game_speed)
         pygame.display.flip()
