@@ -1187,6 +1187,19 @@ class COSBdining(Room):
     def new_room(self, place):
         if place == "COSBstair0":
             return (0*64, 14.5*64, "right")
+        elif place =="COSBkitchen":
+            return(0*64,4.5*64,"right")
+
+class COSBkitchen(Room):
+    def __init__(self,player,screen):
+        Room.__init__(self,player,'levels/COSBkitchen.tmx',screen,"data/music/Songtest.ogg")
+
+    def new_room(self,place):
+        if place == "COSBservant":
+            return (2.5*64,0*64,"down")
+        elif place == "COSBdining":
+            return(8*64,4.5*64,"left")
+
 
 
     
