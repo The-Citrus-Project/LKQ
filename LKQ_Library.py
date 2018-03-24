@@ -93,7 +93,7 @@ def display_text(screen, w, h, text):
     """Function to display game text/npc dialogue to the screen."""
     pygame.draw.rect(screen, BLUE, (10, h - 90, w - 20, 80))
     pygame.draw.rect(screen, WHITE, (15, h - 85, w - 30, 70))
-    myfont = pygame.font.SysFont("castellar", 20)
+    myfont = pygame.font.SysFont("castelar", 20)
     myfont.set_bold(True)
     label = myfont.render(text, 1, BLACK)
     screen.blit(label, (20, h - 80))
@@ -103,7 +103,7 @@ def battle_text(screen, text1, text2, text3, text4):
     """Function (that probably needs a rewrite) to display text during the battle phase."""
     pygame.draw.rect(screen, BLUE, (10, 400, 780, 190))
     pygame.draw.rect(screen, WHITE, (15, 405, 770, 180))
-    myfont = pygame.font.SysFont("castellar", 25)
+    myfont = pygame.font.SysFont("castelar", 25)
     myfont.set_bold(False)
     label1 = myfont.render(text1, 1, BLACK)
     label2 = myfont.render(text2, 1, BLACK)
@@ -927,7 +927,7 @@ class PauseRoom(object):
                 pygame.draw.rect(screen, GREEN, (object.x, object.y, object.width, object.height))
             else:
                 pygame.draw.rect(screen, BLUE, (object.x, object.y, object.width, object.height))
-            myfont = pygame.font.SysFont("castellar", 60)
+            myfont = pygame.font.SysFont("castelar", 60)
             myfont.set_bold(True)
             label = myfont.render(object.name, 1, RED)
             screen.blit(label, (object.x + 50, object.y + 30))
