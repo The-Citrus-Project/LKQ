@@ -78,6 +78,8 @@ def main():
     rooms.append(COSBdining(player, screen))
     rooms.append(COSBstair1(player, screen))
     rooms.append(COSBkitchen(player, screen))
+    rooms.append(COSBservant(player, screen))
+  
     current_room_no = 12
     current_room = rooms[current_room_no]
     last_room_no = 1    
@@ -100,6 +102,7 @@ def main():
     room_names.append("COSBdining")
     room_names.append("COSBstair1")
     room_names.append("COSBkitchen")
+    room_names.append("COSBservant")
     
     # VARIABLES
 
