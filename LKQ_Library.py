@@ -1189,4 +1189,11 @@ class COSBdining(Room):
             return (0*64, 14.5*64, "right")
 
 
-    
+class COSBservant(Room):
+    def __init__(self,player,screen):
+        Room.__init__(self,player,'levels/COSBservant.tmx',screen,"data/music/Songtest.ogg")
+
+    def new_room(self, place):
+        if place == "COSBkitchen":
+            return (2.5*64, 3*64, "up")
+
