@@ -13,14 +13,13 @@ Lemon Kingdom Quest: The Sorceror Arises
 """
 # CHANGES FROM PREVIOUS VERSION:
 """
-- SPLIT INTO MAIN AND LIBRARY
+- 
 - BUG FIXES
 """
 # TO DO:
 """
-- CHANGE HERO AND ENEMY CLASSES TO RPG STYLE (done)
-- SEPERATE LOOP INTO 4 SEGMENTS FOR DIFFERENT GAME MODES (done)
-- CREATE BATTLE SIMULATOR (in progress)
+- Make NPC Text wrap
+- Add stat screen to pause menu
 - FINISH CASTLE OF SECLUSION 
 """
 from LKQ_Library import *
