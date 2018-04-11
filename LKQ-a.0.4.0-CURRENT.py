@@ -2,7 +2,7 @@
 Lemon Kingdom Quest: The Sorceror Arises
 - Developed by: The Citrus Project
 - Story: Nakamura Daiki, Yukimura Nobuko
-- Main Programmer: Ethan Fyre of NaetherTech
+- Main Programmer: Ethan Fyre of NaetherTechkd
 - Citrish and Pholeth: Karl Schneider, Nikita Chekhov
 - Sprite Design: Nikita Chekhov, Kobayashi Koji
 - Concept Art: N/A
@@ -77,7 +77,9 @@ def main():
     rooms.append(COSBstair0(player, screen))
     rooms.append(COSBdining(player, screen))
     rooms.append(COSBstair1(player, screen))
+    rooms.append(COSBkitchen(player, screen))
     rooms.append(COSBservant(player, screen))
+  
     current_room_no = 12
     current_room = rooms[current_room_no]
     last_room_no = 1    
@@ -99,6 +101,7 @@ def main():
     room_names.append("COSBstair0")
     room_names.append("COSBdining")
     room_names.append("COSBstair1")
+    room_names.append("COSBkitchen")
     room_names.append("COSBservant")
     
     # VARIABLES
