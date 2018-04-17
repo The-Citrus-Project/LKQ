@@ -1266,3 +1266,4 @@ class COSBbattle(Room):
             return(3.5*64,0*64,"down")
         elif place == "COSBspiderhole":
             return(12*64,7.5*64,"left")
+
