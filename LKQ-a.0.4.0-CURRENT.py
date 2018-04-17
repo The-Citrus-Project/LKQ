@@ -79,8 +79,13 @@ def main():
     rooms.append(COSBstair1(player, screen))
     rooms.append(COSBkitchen(player, screen))
     rooms.append(COSBservant(player, screen))
+    rooms.append(COSBbattle(player, screen))
+    rooms.append(COSBlocked0(player, screen))
+    rooms.append(COSBhealth(player, screen))
+    rooms.append(COSBchest(player, screen))
+    rooms.append(COSBjailer(player, screen))
   
-    current_room_no = 12
+    current_room_no = 17
     current_room = rooms[current_room_no]
     last_room_no = 1    
     room_names.append("grass_test")
@@ -103,6 +108,11 @@ def main():
     room_names.append("COSBstair1")
     room_names.append("COSBkitchen")
     room_names.append("COSBservant")
+    room_names.append("COSBbattle")
+    room_names.append("COSBlocked0")
+    room_names.append("COSBhealth")
+    room_names.append("COSBchest")
+    room_names.append("COSBjailer")
     
     # VARIABLES
 
