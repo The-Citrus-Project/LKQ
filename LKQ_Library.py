@@ -1320,3 +1320,4 @@ class COSBstorage(Room):
         if place == "COSBguard":
             return (4.5*64,4*64,"left")
 
+
