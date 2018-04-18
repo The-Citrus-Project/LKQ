@@ -1179,7 +1179,7 @@ class COSBstair1(Room):
         if place == "COSBstair0":
             return (4*64, 1*64, "down")
         elif place == "COSBbattle":
-            return (8*64, 3.5*64, "left")
+            return (8*64, 3*64, "left")
 
 
 class COSBdining(Room):
@@ -1265,5 +1265,57 @@ class COSBbattle(Room):
         elif place == "COSBjailer":
             return(3.5*64,0*64,"down")
         elif place == "COSBspiderhole":
-            return(12*64,7.5*64,"left")
+            return(12*64,7*64,"left")
 
+
+class COSBspiderhole(Room):
+    def __init__(self,player,screen):
+        Room.__init__(self,player,'levels/COSBspiderhole.tmx',screen,"data/music/Songtest.ogg")
+
+    def new_room(self,place):
+        if place == "COSBbattle":
+            return (0*64,3*64,"right")
+        elif place == "COSBjail0":
+            return(3.5*64,7*64,"up")
+        elif place == "COSBguard":
+            return(3.5*64,0*64,"down")
+
+
+class COSBjail0(Room):
+    def __init__(self,player,screen):
+        Room.__init__(self,player,'levels/COSBjail0.tmx',screen,"data/music/Songtest.ogg")
+
+    def new_room(self,place):
+        if place == "COSBspiderhole":
+            return (4.5*64,0*64,"down")
+        elif place == "COSBjail1":
+            return(0*64,3*64,"right")
+
+
+class COSBjail1(Room):
+    def __init__(self,player,screen):
+        Room.__init__(self,player,'levels/COSBjail1.tmx',screen,"data/music/Songtest.ogg")
+
+    def new_room(self,place):
+        if place == "COSBjail0":
+            return (7*64,3.5*64,"left")
+
+
+class COSBguard(Room):
+    def __init__(self,player,screen):
+        Room.__init__(self,player,'levels/COSBguard.tmx',screen,"data/music/Songtest.ogg")
+
+    def new_room(self,place):
+        if place == "COSBspiderhole":
+            return (4.5*64,4*64,"up")
+        elif place == "COSBstorage":
+            return(4.5*64,0*64,"up")
+
+
+class COSBstorage(Room):
+    def __init__(self,player,screen):
+        Room.__init__(self,player,'levels/COSBstorage.tmx',screen,"data/music/Songtest.ogg")
+
+    def new_room(self,place):
+        if place == "COSBguard":
+            return (4.5*64,4*64,"left")

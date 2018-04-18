@@ -84,8 +84,13 @@ def main():
     rooms.append(COSBhealth(player, screen))
     rooms.append(COSBchest(player, screen))
     rooms.append(COSBjailer(player, screen))
+    rooms.append(COSBspiderhole(player, screen))
+    rooms.append(COSBjail0(player, screen))
+    rooms.append(COSBjail1(player, screen))
+    rooms.append(COSBguard(player, screen))
+    rooms.append(COSBstorage(player, screen))
   
-    current_room_no = 17
+    current_room_no = 22
     current_room = rooms[current_room_no]
     last_room_no = 1    
     room_names.append("grass_test")
@@ -113,6 +118,11 @@ def main():
     room_names.append("COSBhealth")
     room_names.append("COSBchest")
     room_names.append("COSBjailer")
+    room_names.append("COSBspiderhole")
+    room_names.append("COSBjail0")
+    room_names.append("COSBjail1")
+    room_names.append("COSBguard")
+    room_names.append("COSBstorage")
     
     # VARIABLES
 
