@@ -1239,7 +1239,7 @@ class COSBchest(Room):
         if place == "COSBlocked0":
             return (3.5*64,1*64,"down")
         elif place == "COSBbattle":
-            return(8*64,3.5*64,"left")
+            return(8*64,3*64,"left")
 
 
 class COSBjailer(Room):
