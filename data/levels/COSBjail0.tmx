@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="10" height="7" tilewidth="64" tileheight="64" infinite="0" nextobjectid="31">
+ <tileset firstgid="1" source="COS.tsx"/>
+ <tileset firstgid="50" source="Torch.tsx"/>
+ <layer name="under0" width="10" height="7">
+  <data encoding="csv">
+33,33,33,33,33,33,33,33,33,33,
+33,33,33,33,33,33,33,33,33,33,
+33,33,33,33,33,33,33,33,33,33,
+33,33,33,33,33,33,33,33,33,33,
+33,33,33,33,33,33,33,33,33,33,
+33,33,33,33,33,33,33,33,33,33,
+33,33,33,33,33,33,33,33,33,33
+</data>
+ </layer>
+ <layer name="under1" width="10" height="7">
+  <data encoding="csv">
+25,26,19,21,0,0,18,19,19,28,
+21,0,0,0,0,0,0,0,0,35,
+0,0,0,0,0,0,0,0,0,35,
+0,0,0,0,0,0,0,0,0,35,
+7,0,0,0,0,0,0,0,0,35,
+32,0,0,0,0,0,0,0,0,35,
+39,40,40,40,40,40,40,40,41,42
+</data>
+ </layer>
+ <layer name="under2" width="10" height="7">
+  <data encoding="csv">
+0,50,0,0,0,0,0,50,0,0,
+0,0,0,0,0,0,0,0,0,2684354610,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,2684354610,
+0,0,0,0,0,0,0,0,0,0,
+1610612786,0,0,0,0,0,0,0,0,2684354610,
+0,3221225522,0,3221225522,0,3221225522,0,3221225522,0,0
+</data>
+ </layer>
+ <layer name="over0" width="10" height="7">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup name="walls">
+  <object id="1" name="wall" gid="13" x="0" y="128" width="64" height="64"/>
+  <object id="2" name="wall" gid="13" x="0" y="64" width="64" height="64"/>
+  <object id="3" name="wall" gid="13" x="64" y="64" width="64" height="64"/>
+  <object id="4" name="wall" gid="13" x="128" y="64" width="64" height="64"/>
+  <object id="5" name="wall" gid="13" x="192" y="64" width="64" height="64"/>
+  <object id="6" name="wall" gid="13" x="384" y="64" width="64" height="64"/>
+  <object id="7" name="wall" gid="13" x="448" y="64" width="64" height="64"/>
+  <object id="8" name="wall" gid="13" x="512" y="64" width="64" height="64"/>
+  <object id="9" name="wall" gid="13" x="576" y="64" width="64" height="64"/>
+  <object id="10" name="wall" gid="13" x="576" y="128" width="64" height="64"/>
+  <object id="11" name="wall" gid="13" x="576" y="192" width="64" height="64"/>
+  <object id="12" name="wall" gid="13" x="576" y="256" width="64" height="64"/>
+  <object id="13" name="wall" gid="13" x="576" y="320" width="64" height="64"/>
+  <object id="14" name="wall" gid="13" x="576" y="384" width="64" height="64"/>
+  <object id="15" name="wall" gid="13" x="576" y="448" width="64" height="64"/>
+  <object id="16" name="wall" gid="13" x="512" y="448" width="64" height="64"/>
+  <object id="17" name="wall" gid="13" x="448" y="448" width="64" height="64"/>
+  <object id="18" name="wall" gid="13" x="384" y="448" width="64" height="64"/>
+  <object id="19" name="wall" gid="13" x="320" y="448" width="64" height="64"/>
+  <object id="20" name="wall" gid="13" x="256" y="448" width="64" height="64"/>
+  <object id="21" name="wall" gid="13" x="192" y="448" width="64" height="64"/>
+  <object id="22" name="wall" gid="13" x="128" y="448" width="64" height="64"/>
+  <object id="23" name="wall" gid="13" x="64" y="448" width="64" height="64"/>
+  <object id="24" name="wall" gid="13" x="0" y="448" width="64" height="64"/>
+  <object id="25" name="wall" gid="13" x="0" y="384" width="64" height="64"/>
+  <object id="26" name="wall" gid="13" x="0" y="320" width="64" height="64"/>
+  <object id="27" name="COSBspiderhole" gid="13" x="256" y="0" width="64" height="64"/>
+  <object id="28" name="COSBspiderhole" gid="13" x="320" y="0" width="64" height="64"/>
+  <object id="29" name="COSBjail1" gid="13" x="-64" y="256" width="64" height="64"/>
+  <object id="30" name="COSBjail1" gid="13" x="-64" y="192" width="64" height="64"/>
+ </objectgroup>
+ <layer name="over1" width="10" height="7">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>
