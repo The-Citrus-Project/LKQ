@@ -1321,6 +1321,3 @@ class COSBstorage(Room):
             return (4.5*64,4*64,"left")
 
 
-
-
-
