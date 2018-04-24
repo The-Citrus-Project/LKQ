@@ -1190,7 +1190,7 @@ class COSBdining(Room):
         if place == "COSBstair0":
             return (0*64, 14.5*64, "right")
         elif place =="COSBkitchen":
-            return(0*64,4.5*64,"right")
+            return(0*64,4*64,"right")
 
 
 class COSBkitchen(Room):
