@@ -1190,7 +1190,7 @@ class COSBdining(Room):
         if place == "COSBstair0":
             return (0*64, 14.5*64, "right")
         elif place =="COSBkitchen":
-            return(0*64,4.5*64,"right")
+            return(0*64,4*64,"right")
 
 
 class COSBkitchen(Room):
@@ -1239,7 +1239,7 @@ class COSBchest(Room):
         if place == "COSBlocked0":
             return (3.5*64,1*64,"down")
         elif place == "COSBbattle":
-            return(8*64,3.5*64,"left")
+            return(8*64,3*64,"left")
 
 
 class COSBjailer(Room):
