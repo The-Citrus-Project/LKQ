@@ -18,5 +18,7 @@ pygame, pyscroll, time, random, math, pytmx
 
 All of these libraries can be installed using pip.
 
+Alternatively you can install the dependencies using environment.yml
+
 
 
